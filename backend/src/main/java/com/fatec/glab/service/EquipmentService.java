@@ -33,9 +33,9 @@ public class EquipmentService {
         if (existingEquipment.isPresent()) {
             Equipment equipment = existingEquipment.get();
             equipment.setName(updatedEquipment.getName());
-            equipment.setPrice(updatedEquipment.getPrice());
-            equipment.setDescription(updatedEquipment.getDescription());
-            equipment.setStock(updatedEquipment.getStock());
+            equipment.setCategory(updatedEquipment.getCategory());
+            equipment.setManufacturer(updatedEquipment.getManufacturer());
+            equipment.setStatus(updatedEquipment.getStatus());
             return equipmentRepository.save(equipment);
         } else {
             throw new IdNotFoundException("Equipment com ID " + id + " não encontrado.");
