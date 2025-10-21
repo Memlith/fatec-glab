@@ -35,9 +35,10 @@ public class UserService {
             user.setName(updatedUser.getName());
             user.setEmail(updatedUser.getEmail());
             return userRepository.save(user);
-        } else {
-            throw new IdNotFoundException("User com ID " + id + " não encontrado.");
         }
+
+        throw new IdNotFoundException("User com ID " + id + " não encontrado.");
+
     }
 
     public void delete(String id) {
