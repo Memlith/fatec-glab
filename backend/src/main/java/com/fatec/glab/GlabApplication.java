@@ -10,6 +10,4 @@ public class GlabApplication {
 		SpringApplication.run(GlabApplication.class, args);
 	}
 
-
-
 }
