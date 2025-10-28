@@ -1,5 +1,6 @@
 package com.fatec.glab.service;
 
+import com.fatec.glab.exception.IdNotFoundException;
 import com.fatec.glab.model.Booking;
 import com.fatec.glab.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,11 @@ public class BookingService {
     private BookingRepository bookingRepository;
 
 
-    public List<Booking> findAll() {
+    public List<Booking> getAll() {
         return bookingRepository.findAll();
     }
 
-    public Optional<Booking> findById(String id) {
+    public Optional<Booking> getById(String id) {
         return bookingRepository.findById(id);
     }
 
@@ -29,11 +30,34 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-    public List<Booking> findBookingsByDateAndRoom(LocalDate date, String room) {
+    public List<Booking> getBookingsByDateAndRoom(LocalDate date, String room) {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
 
         return bookingRepository.findByRoomAndDateRange(room, startOfDay, endOfDay);
+    }
+
+    public void delete(String id){
+        bookingRepository.deleteById(id);
+    }
+
+    public Booking update(String id, Booking updatedBooking){
+
+        Optional<Booking> existingBooking = bookingRepository.findById(id);
+        if (existingBooking.isPresent()){
+            Booking booking = existingBooking.get();
+            booking.setStartTime(updatedBooking.getStartTime());
+            booking.setEndTime(updatedBooking.getEndTime());
+            booking.setNotes(updatedBooking.getNotes());
+            booking.setUserId(updatedBooking.getUserId());
+            booking.setResourceType(updatedBooking.getResourceType());
+            booking.setResourceId(updatedBooking.getResourceId());
+            booking.setRoom(updatedBooking.getRoom());
+            return bookingRepository.save(booking);
+        }else {
+            throw new IdNotFoundException("Booking com ID" + id + " não foi encontrado. ");
+        }
+
     }
 
 }

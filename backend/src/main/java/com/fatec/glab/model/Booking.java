@@ -1,5 +1,7 @@
 package com.fatec.glab.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +14,8 @@ public class Booking {
     @Id
     private String id;
 
+    @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -24,6 +28,16 @@ public class Booking {
     public Booking() {
     }
 
+    public Booking(String id, LocalDateTime startTime, LocalDateTime endTime, String notes, String userId, String resourceType, String resourceId, String room) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.notes = notes;
+        this.userId = userId;
+        this.resourceType = resourceType;
+        this.resourceId = resourceId;
+        this.room = room;
+    }
 
     public String getRoom() {
         return room;

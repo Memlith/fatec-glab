@@ -19,8 +19,8 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping("/{id}")
-    public Optional<Booking> findById(@PathVariable String id) {
-        return bookingService.findById(id);
+    public Optional<Booking> getById(@PathVariable String id) {
+        return bookingService.getById(id);
     }
 
     @GetMapping
@@ -31,20 +31,26 @@ public class BookingController {
             @RequestParam(value = "room", required = false) String room) {
 
         if (date != null && room != null) {
-            return bookingService.findBookingsByDateAndRoom(date, room);
+            return bookingService.getBookingsByDateAndRoom(date, room);
         } else {
-            return bookingService.findAll();
+            return bookingService.getAll();
         }
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "test";
     }
 
     @PostMapping
     public Booking save(@RequestBody Booking booking) {
         return bookingService.save(booking);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id){
+        bookingService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public Booking update(@PathVariable String id, @RequestBody Booking booking){
+        return bookingService.update(id, booking);
+    }
+
 
 }
