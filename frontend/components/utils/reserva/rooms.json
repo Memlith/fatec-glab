@@ -1,0 +1,236 @@
+{
+  "1": {
+    "terreo": [
+      {
+        "id": "lab_01",
+        "label": "Lab 01",
+        "x": 50,
+        "y": 690,
+        "width": 700,
+        "height": 600
+      },
+      {
+        "id": "lab_02",
+        "label": "Lab 02",
+        "x": 50,
+        "y": 50,
+        "width": 800,
+        "height": 600
+      },
+      {
+        "id": "lab_03",
+        "label": "Lab 03",
+        "x": 890,
+        "y": 50,
+        "width": 800,
+        "height": 600
+      },
+      {
+        "id": "lab_04",
+        "label": "Lab 04",
+        "x": 990,
+        "y": 690,
+        "width": 700,
+        "height": 600
+      },
+      {
+        "id": "lab_05",
+        "label": "Lab 05",
+        "x": 50,
+        "y": 1800,
+        "width": 700,
+        "height": 525
+      },
+      {
+        "id": "lab_06",
+        "label": "Lab 06",
+        "x": 50,
+        "y": 2370,
+        "width": 800,
+        "height": 600
+      },
+      {
+        "id": "lab_07",
+        "label": "Lab 07",
+        "x": 890,
+        "y": 2370,
+        "width": 800,
+        "height": 600
+      },
+      {
+        "id": "lab_08",
+        "label": "Lab 08",
+        "x": 990,
+        "y": 1800,
+        "width": 700,
+        "height": 525
+      }
+    ]
+  },
+  "2": {
+    "terreo": [
+      {
+        "id": "lab_11",
+        "label": "Lab 11",
+        "x": 100,
+        "y": 940,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "lab_12",
+        "label": "Lab 12",
+        "x": 100,
+        "y": 1800,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "lab_13",
+        "label": "Lab 13",
+        "x": 100,
+        "y": 100,
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "primeiro": [
+      {
+        "id": "11",
+        "label": "Sala 11",
+        "x": 100,
+        "y": 1800,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "12",
+        "label": "Sala 12",
+        "x": 100,
+        "y": 940,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "13",
+        "label": "Sala 13",
+        "x": 100,
+        "y": 100,
+        "width": 800,
+        "height": 600
+      },
+      {
+        "id": "14",
+        "label": "Sala 14",
+        "x": 940,
+        "y": 1800,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "15",
+        "label": "Sala 15",
+        "x": 940,
+        "y": 940,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "16",
+        "label": "Sala 16",
+        "x": 940,
+        "y": 100,
+        "width": 600,
+        "height": 800
+      }
+    ],
+    "segundo": [
+      {
+        "id": "21",
+        "label": "Sala 21",
+        "x": 100,
+        "y": 1800,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "22",
+        "label": "Sala 22",
+        "x": 100,
+        "y": 940,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "23",
+        "label": "Sala 23",
+        "x": 100,
+        "y": 100,
+        "width": 800,
+        "height": 600
+      },
+      {
+        "id": "24",
+        "label": "Sala 24",
+        "x": 940,
+        "y": 1800,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "25",
+        "label": "Sala 25",
+        "x": 940,
+        "y": 940,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "26",
+        "label": "Sala 26",
+        "x": 940,
+        "y": 100,
+        "width": 600,
+        "height": 800
+      }
+    ],
+    "terceiro": [
+      {
+        "id": "aud",
+        "label": "Auditório",
+        "x": 100,
+        "y": 100,
+        "width": 1400,
+        "height": 1200
+      },
+      {
+        "id": "31",
+        "label": "Sala 31",
+        "x": 100,
+        "y": 1800,
+        "width": 600,
+        "height": 800
+      },
+      {
+        "id": "32",
+        "label": "Sala 32",
+        "x": 940,
+        "y": 1800,
+        "width": 600,
+        "height": 800
+      }
+    ]
+  },
+  "3": {
+    "terreo": [
+      {
+        "id": "05",
+        "label": "Sala 05",
+        "x": 100,
+        "y": 940,
+        "width": 600,
+        "height": 800
+      }
+    ]
+  }
+}
