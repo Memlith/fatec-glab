@@ -1,3 +1,4 @@
+<<<<<<< HEAD:backend/src/main/java/com/fatec/glab/model/Classroom.java
 package com.fatec.glab.model;
 
 import org.springframework.data.annotation.Id;
@@ -71,3 +72,5 @@ public class Classroom {
         this.softwares = softwares;
     }
 }
+=======
+>>>>>>> 84569e2 (feat: create a software document and change laboratory):backend/src/main/java/com/fatec/glab/model/Laboratory.java
