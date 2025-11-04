@@ -19,7 +19,6 @@ import com.fatec.glab.service.EquipmentService;
 
 @RestController
 @RequestMapping("/equipments")
-@CrossOrigin(origins = "http://localhost:3000")
 public class EquipmentController {
 
     @Autowired
