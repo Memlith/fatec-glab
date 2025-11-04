@@ -1,3 +1,4 @@
+<<<<<<< HEAD:backend/src/main/java/com/fatec/glab/controller/ClassroomController.java
 package com.fatec.glab.controller;
 
 import java.util.List;
@@ -62,3 +63,5 @@ public class ClassroomController {
     }
 
 }
+=======
+>>>>>>> d3114d9 (refactor: rename Laboratory>Classroom + new port):backend/src/main/java/com/fatec/glab/controller/LaboratoryController.java
