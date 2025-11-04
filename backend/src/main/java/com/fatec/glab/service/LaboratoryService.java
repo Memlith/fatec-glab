@@ -33,7 +33,8 @@ public class LaboratoryService {
         if (existingLaboratory.isPresent()) {
             Laboratory laboratory = existingLaboratory.get();
             laboratory.setName(updatedLaboratory.getName());
-            laboratory.setLocation(updatedLaboratory.getLocation());
+            laboratory.setEquipments(updatedLaboratory.getEquipments());
+            laboratory.setSoftwares(updatedLaboratory.getSoftwares());
             laboratory.setCapacity(updatedLaboratory.getCapacity());
             return laboratoryRepository.save(laboratory);
         } else {

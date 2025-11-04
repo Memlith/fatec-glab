@@ -3,14 +3,17 @@ package com.fatec.glab.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "laboratories")
 public class Laboratory {
 
     @Id
     private String id;
     private String name;
-    private String location;
     private int capacity;
+    private List<Equipment> equipments;
+    private List<Software> softwares;
 
     public String getId() {
         return id;
@@ -28,19 +31,27 @@ public class Laboratory {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public int getCapacity() {
         return capacity;
     }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(List<Equipment> equipments) {
+        this.equipments = equipments;
+    }
+
+    public List<Software> getSoftwares() {
+        return softwares;
+    }
+
+    public void setSoftwares(List<Software> softwares) {
+        this.softwares = softwares;
     }
 }
