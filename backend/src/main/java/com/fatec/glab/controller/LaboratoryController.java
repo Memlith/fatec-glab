@@ -19,7 +19,6 @@ import com.fatec.glab.service.LaboratoryService;
 
 @RestController
 @RequestMapping("/laboratories")
-@CrossOrigin(origins = "http://localhost:3000")
 public class LaboratoryController {
 
     @Autowired
