@@ -18,9 +18,20 @@ import com.fatec.glab.model.Classroom;
 import com.fatec.glab.service.ClassroomService;
 
 @RestController
+<<<<<<< HEAD
 @RequestMapping("/classrooms")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ClassroomController {
+=======
+<<<<<<< HEAD:backend/src/main/java/com/fatec/glab/controller/LaboratoryController.java
+@RequestMapping("/laboratories")
+public class LaboratoryController {
+=======
+@RequestMapping("/classrooms")
+@CrossOrigin(origins = "http://localhost:3000")
+public class ClassroomController {
+>>>>>>> b0e2203 (refactor: rename Laboratory>Classroom + new port):backend/src/main/java/com/fatec/glab/controller/ClassroomController.java
+>>>>>>> e0318b6 (refactor: rename Laboratory>Classroom + new port)
 
     @Autowired
     private ClassroomService classroomService;
