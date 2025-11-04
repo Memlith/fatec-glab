@@ -3,8 +3,8 @@ package com.fatec.glab.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "laboratories")
-public class Laboratory {
+@Document(collection = "classrooms")
+public class Classroom {
 
     @Id
     private String id;

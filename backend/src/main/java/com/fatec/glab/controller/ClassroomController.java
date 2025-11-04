@@ -14,40 +14,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fatec.glab.model.Laboratory;
-import com.fatec.glab.service.LaboratoryService;
+import com.fatec.glab.model.Classroom;
+import com.fatec.glab.service.ClassroomService;
 
 @RestController
-@RequestMapping("/laboratories")
+@RequestMapping("/classrooms")
 @CrossOrigin(origins = "http://localhost:3000")
-public class LaboratoryController {
+public class ClassroomController {
 
     @Autowired
-    private LaboratoryService laboratoryService;
+    private ClassroomService classroomService;
 
     @GetMapping
-    public List<Laboratory> getAll() {
-        return laboratoryService.getAll();
+    public List<Classroom> getAll() {
+        return classroomService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Laboratory> getById(@PathVariable String id) {
-        return laboratoryService.getById(id);
+    public Optional<Classroom> getById(@PathVariable String id) {
+        return classroomService.getById(id);
     }
 
     @PostMapping
-    public Laboratory create(@RequestBody Laboratory laboratory) {
-        return laboratoryService.save(laboratory);
+    public Classroom create(@RequestBody Classroom classroom) {
+        return classroomService.save(classroom);
     }
 
     @PutMapping("/{id}")
-    public Laboratory update(@PathVariable String id, @RequestBody Laboratory laboratory) {
-        return laboratoryService.update(id, laboratory);
+    public Classroom update(@PathVariable String id, @RequestBody Classroom classroom) {
+        return classroomService.update(id, classroom);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
-        laboratoryService.delete(id);
+        classroomService.delete(id);
     }
 
 }
