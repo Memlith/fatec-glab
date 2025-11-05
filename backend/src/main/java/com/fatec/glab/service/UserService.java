@@ -3,6 +3,7 @@ package com.fatec.glab.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.fatec.glab.dto.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public List<UserResponseDTO> getAll() {
+        List<User> users = userRepository.findAll();
+
+        return users.stream().map(this::convertToUserResponseDTO).toList();
     }
 
     public Optional<User> getById(String id) {
@@ -43,6 +46,14 @@ public class UserService {
 
     public void delete(String id) {
         userRepository.deleteById(id);
+    }
+
+    private UserResponseDTO convertToUserResponseDTO(User user) {
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole());
     }
 
 }
