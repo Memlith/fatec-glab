@@ -3,6 +3,7 @@ package com.fatec.glab.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.fatec.glab.dto.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +26,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAll() {
+    public List<UserResponseDTO> getAll() {
         return userService.getAll();
     }
 
