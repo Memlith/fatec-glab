@@ -1,6 +1,5 @@
 package com.fatec.glab.controller;
 
-import com.fatec.glab.model.Laboratory;
 import com.fatec.glab.model.Software;
 import com.fatec.glab.service.SoftwareService;
 import org.springframework.beans.factory.annotation.Autowired;

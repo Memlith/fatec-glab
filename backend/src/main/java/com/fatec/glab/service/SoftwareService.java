@@ -1,7 +1,6 @@
 package com.fatec.glab.service;
 
 import com.fatec.glab.exception.IdNotFoundException;
-import com.fatec.glab.model.Laboratory;
 import com.fatec.glab.model.Software;
 import com.fatec.glab.repository.SoftwareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
