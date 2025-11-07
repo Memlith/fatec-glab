@@ -1,12 +1,12 @@
 package com.fatec.glab.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
-@Document(collection = "laboratories")
-public class Laboratory {
+@Document(collection = "classrooms")
+public class Classroom {
 
     @Id
     private String id;
