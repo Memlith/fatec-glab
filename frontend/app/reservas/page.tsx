@@ -27,59 +27,70 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { Booking } from "@/services/api";
+import { fetchBookings } from "@/services/bookingsService";
 
-const sampleBookings = [
-  {
-    id: "1",
-    title: "GEST AGIL PROJ SOFT",
-    startTime: "07:40",
-    endTime: "09:20",
-    user: "LILIAN",
-    type: "Aula" as const,
-    resource: "VSCode, Node",
-    color: "#3b82f6",
-  },
-  {
-    id: "2",
-    title: "GEST AGIL PROJ SOFT",
-    startTime: "09:30",
-    endTime: "11:10",
-    user: "LILIAN",
-    type: "Aula" as const,
-    resource: "Makita, Projetor",
-    color: "#3b82f6",
-  },
-  {
-    id: "3",
-    title: "IHC",
-    startTime: "11:20",
-    endTime: "13:00",
-    user: "LILIAN",
-    type: "Aula" as const,
-    resource: "AutoCAD",
-    color: "#10b981",
-  },
-  {
-    id: "4",
-    title: "SIST. INT. GESTÃO",
-    startTime: "14:30",
-    endTime: "16:10",
-    user: "HAMILTON",
-    type: "Aula" as const,
-    resource: "Projetor, TV",
-    color: "#f59e0b",
-  },
-  {
-    id: "5",
-    title: "Reunião Equipe X",
-    startTime: "16:30",
-    endTime: "17:30",
-    user: "Rogérin",
-    type: "Agendamento" as const,
-    resource: "VSCode, Eclipse",
-    color: "#ef4444",
-  },
-];
+
+// Criando o use state de bookings
+const [bookings, setBookings] = useState<Booking[]>([]);
+
+useEffect(() => {
+
+  fetchBookings(setBookings);
+}, [])
+
+// const sampleBookings = [
+//   {
+//     id: "1",
+//     title: "GEST AGIL PROJ SOFT",
+//     startTime: "07:40",
+//     endTime: "09:20",
+//     user: "LILIAN",
+//     type: "Aula" as const,
+//     resource: "VSCode, Node",
+//     color: "#3b82f6",
+//   },
+//   {
+//     id: "2",
+//     title: "GEST AGIL PROJ SOFT",
+//     startTime: "09:30",
+//     endTime: "11:10",
+//     user: "LILIAN",
+//     type: "Aula" as const,
+//     resource: "Makita, Projetor",
+//     color: "#3b82f6",
+//   },
+//   {
+//     id: "3",
+//     title: "IHC",
+//     startTime: "11:20",
+//     endTime: "13:00",
+//     user: "LILIAN",
+//     type: "Aula" as const,
+//     resource: "AutoCAD",
+//     color: "#10b981",
+//   },
+//   {
+//     id: "4",
+//     title: "SIST. INT. GESTÃO",
+//     startTime: "14:30",
+//     endTime: "16:10",
+//     user: "HAMILTON",
+//     type: "Aula" as const,
+//     resource: "Projetor, TV",
+//     color: "#f59e0b",
+//   },
+//   {
+//     id: "5",
+//     title: "Reunião Equipe X",
+//     startTime: "16:30",
+//     endTime: "17:30",
+//     user: "Rogérin",
+//     type: "Agendamento" as const,
+//     resource: "VSCode, Eclipse",
+//     color: "#ef4444",
+//   },
+// ];
 
 export default function page() {
   const router = useRouter();
@@ -188,7 +199,7 @@ export default function page() {
             </div>
 
             <div className="w-full h-full rounded-md ">
-              <DailyScheduleCard date={new Date()} bookings={sampleBookings} />
+              <DailyScheduleCard date={new Date()} bookings={bookings} />
             </div>
           </div>
         </div>
