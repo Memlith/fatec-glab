@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fatec.glab.dto.UserResponseDTO;
+import com.fatec.glab.dto.user.UserResponseDTO;
 import com.fatec.glab.model.User;
 import com.fatec.glab.repository.UserRepository;
 
