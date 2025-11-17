@@ -32,12 +32,7 @@ import { fetchBookings } from "@/services/bookingsService";
 
 
 // Criando o use state de bookings
-const [bookings, setBookings] = useState<Booking[]>([]);
 
-useEffect(() => {
-
-  fetchBookings(setBookings);
-}, [])
 
 // const sampleBookings = [
 //   {
@@ -95,6 +90,13 @@ useEffect(() => {
 export default function page() {
   const router = useRouter();
   const [date, setDate] = useState<Date | undefined>(new Date());
+
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+useEffect(() => {
+
+  fetchBookings(setBookings);
+}, [])
 
   const searchParams = useSearchParams();
   const dayParam = searchParams.get("date");

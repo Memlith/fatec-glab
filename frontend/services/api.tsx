@@ -28,8 +28,10 @@ export type Booking = {
   startTime: string;
   endTime: string;
   user?: string;
-  type?: "Aula" | "Agendamento";
-  resource?: string;
+  type?: string;
+  repeat?: boolean;
+  description?: string;
+  room?: string;
   color?: string;
 };
 
