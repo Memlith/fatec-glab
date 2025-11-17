@@ -1,7 +1,5 @@
 package com.fatec.glab.model;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,17 +8,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Document(collection = "classrooms")
-public class Classroom {
+@Document(collection = "users")
+public class Professor {
 
     @Id
     private String id;
     private String name;
-    private Integer capacity;
-    private List<Equipment> equipmentsId;
-    private List<Software> softwaresId;
+    private String email;
+
 
 }

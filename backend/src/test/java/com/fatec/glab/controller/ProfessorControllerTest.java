@@ -1,7 +1,7 @@
 package com.fatec.glab.controller;
 
-import com.fatec.glab.dto.user.UserResponseDTO;
-import com.fatec.glab.service.UserService;
+import com.fatec.glab.dto.user.ProfessorResponseDTO;
+import com.fatec.glab.service.ProfessorService;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserControllerTest {
+class ProfessorControllerTest {
 
     @MockitoBean
-    private UserService userService;
+    private ProfessorService professorService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,9 +32,9 @@ class UserControllerTest {
     @Test
     void shouldReturnStatus200WhenListingAllAvailableUsers() throws Exception {
         //Arrange
-        BDDMockito.given(userService.getAll()).willReturn(List.of(
-                new UserResponseDTO("1", "AA", "AA@example.com", "AAAA"),
-                new UserResponseDTO("2", "BB", "BB@example.com", "AAAA")
+        BDDMockito.given(professorService.getAll()).willReturn(List.of(
+                new ProfessorResponseDTO("1", "AA", "AA@example.com", "AAAA"),
+                new ProfessorResponseDTO("2", "BB", "BB@example.com", "AAAA")
         ));
 
         //Act
