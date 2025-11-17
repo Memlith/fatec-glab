@@ -1,4 +1,4 @@
-package com.fatec.glab.dto.user;
+package com.fatec.glab.dto.professor;
 
 public record ProfessorResponseDTO(
         String id,

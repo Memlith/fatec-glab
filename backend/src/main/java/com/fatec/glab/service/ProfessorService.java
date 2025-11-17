@@ -7,7 +7,7 @@ import com.fatec.glab.model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fatec.glab.dto.user.ProfessorResponseDTO;
+import com.fatec.glab.dto.professor.ProfessorResponseDTO;
 import com.fatec.glab.exception.IdNotFoundException;
 import com.fatec.glab.repository.ProfessorRepository;
 

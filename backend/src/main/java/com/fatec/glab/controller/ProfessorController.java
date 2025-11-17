@@ -2,7 +2,7 @@ package com.fatec.glab.controller;
 
 import java.util.List;
 
-import com.fatec.glab.dto.user.ProfessorResponseDTO;
+import com.fatec.glab.dto.professor.ProfessorResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

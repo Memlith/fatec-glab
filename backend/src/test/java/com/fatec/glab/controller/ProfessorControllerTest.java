@@ -1,6 +1,6 @@
 package com.fatec.glab.controller;
 
-import com.fatec.glab.dto.user.ProfessorResponseDTO;
+import com.fatec.glab.dto.professor.ProfessorResponseDTO;
 import com.fatec.glab.service.ProfessorService;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;

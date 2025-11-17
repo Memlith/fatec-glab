@@ -1,9 +1,11 @@
 package com.fatec.glab.controller;
 
+import com.fatec.glab.dto.booking.BookingResponseDTO;
 import com.fatec.glab.model.Booking;
 import com.fatec.glab.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,8 +20,9 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping("/{id}")
-    public Optional<Booking> getById(@PathVariable String id) {
-        return bookingService.getById(id);
+    public ResponseEntity getById(@PathVariable String id) {
+        var booking = bookingService.getById(id);
+        return ResponseEntity.ok(booking);
     }
 
     @GetMapping

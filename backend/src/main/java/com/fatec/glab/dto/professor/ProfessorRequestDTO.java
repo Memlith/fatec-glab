@@ -1,4 +1,4 @@
-package com.fatec.glab.dto.user;
+package com.fatec.glab.dto.professor;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

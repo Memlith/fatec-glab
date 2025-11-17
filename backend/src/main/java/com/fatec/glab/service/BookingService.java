@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.fatec.glab.dto.booking.BookingResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,14 @@ public class BookingService {
         return bookingRepository.findAll();
     }
 
-    public Optional<Booking> getById(String id) {
-        return bookingRepository.findById(id);
+    public BookingResponseDTO getById(String id) {
+
+        var booking = bookingRepository.findById(id);
+        if(booking.isEmpty()){
+            throw new IdNotFoundException("Booking com ID" + id + " não foi encontrado. ");
+        }
+
+        return new BookingResponseDTO(booking.get());
     }
 
     public Booking save(Booking booking) {
