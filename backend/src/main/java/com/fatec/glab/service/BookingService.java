@@ -1,22 +1,22 @@
 package com.fatec.glab.service;
 
-import com.fatec.glab.exception.IdNotFoundException;
-import com.fatec.glab.model.Booking;
-import com.fatec.glab.repository.BookingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.fatec.glab.exception.IdNotFoundException;
+import com.fatec.glab.model.Booking;
+import com.fatec.glab.repository.BookingRepository;
 
 @Service
 public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
-
 
     public List<Booking> getAll() {
         return bookingRepository.findAll();
@@ -37,24 +37,25 @@ public class BookingService {
         return bookingRepository.findByRoomAndDateRange(room, startOfDay, endOfDay);
     }
 
-    public void delete(String id){
+    public void delete(String id) {
         bookingRepository.deleteById(id);
     }
 
-    public Booking update(String id, Booking updatedBooking){
+    public Booking update(String id, Booking updatedBooking) {
 
         Optional<Booking> existingBooking = bookingRepository.findById(id);
-        if (existingBooking.isPresent()){
+        if (existingBooking.isPresent()) {
             Booking booking = existingBooking.get();
             booking.setStartTime(updatedBooking.getStartTime());
             booking.setEndTime(updatedBooking.getEndTime());
-            booking.setNotes(updatedBooking.getNotes());
-            booking.setUserId(updatedBooking.getUserId());
-            booking.setResourceType(updatedBooking.getResourceType());
-            booking.setResourceId(updatedBooking.getResourceId());
+            booking.setDescription(updatedBooking.getDescription());
+            booking.setUser(updatedBooking.getUser());
+            booking.setRepeat(updatedBooking.isRepeat());
+            booking.setType(updatedBooking.getType());
             booking.setRoom(updatedBooking.getRoom());
+            booking.setTitle(updatedBooking.getTitle());
             return bookingRepository.save(booking);
-        }else {
+        } else {
             throw new IdNotFoundException("Booking com ID" + id + " não foi encontrado. ");
         }
 
