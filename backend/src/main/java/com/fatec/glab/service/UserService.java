@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fatec.glab.dto.UserResponseDTO;
+import com.fatec.glab.dto.user.UserResponseDTO;
 import com.fatec.glab.exception.IdNotFoundException;
 import com.fatec.glab.model.User;
 import com.fatec.glab.repository.UserRepository;

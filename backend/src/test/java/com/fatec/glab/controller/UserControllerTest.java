@@ -1,8 +1,7 @@
 package com.fatec.glab.controller;
 
-import com.fatec.glab.dto.UserResponseDTO;
+import com.fatec.glab.dto.user.UserResponseDTO;
 import com.fatec.glab.service.UserService;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;

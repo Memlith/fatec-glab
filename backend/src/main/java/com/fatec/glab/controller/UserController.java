@@ -1,14 +1,11 @@
 package com.fatec.glab.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.fatec.glab.dto.UserResponseDTO;
-import com.fatec.glab.exception.IdNotFoundException;
+import com.fatec.glab.dto.user.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
