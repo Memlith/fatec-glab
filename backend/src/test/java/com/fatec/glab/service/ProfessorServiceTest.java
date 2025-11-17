@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fatec.glab.dto.user.ProfessorResponseDTO;
+import com.fatec.glab.dto.professor.ProfessorResponseDTO;
 import com.fatec.glab.repository.ProfessorRepository;
 
 @ExtendWith(MockitoExtension.class)
