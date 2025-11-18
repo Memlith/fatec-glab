@@ -6,22 +6,11 @@ import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-interface Booking {
-  id: string;
-  title: string;
-  startTime: string;
-  endTime: string;
-  user?: string;
-  type?: "Aula" | "Agendamento";
-  resource?: string;
-  color?: string;
-}
+import { Booking } from "@/services/api";
 
 interface BookingCardProps {
   booking: Booking;
@@ -29,19 +18,46 @@ interface BookingCardProps {
   height: number;
 }
 
+const getBookingColor = (
+  type: string
+): { badgeClass: string; hexColor: string } => {
+  switch (type) {
+    case "DSM":
+      return { badgeClass: "bg-indigo-600", hexColor: "#4f46e5" };
+    case "COMEX":
+      return { badgeClass: "bg-yellow-400", hexColor: "#facc15" };
+    case "REDES":
+      return { badgeClass: "bg-red-700", hexColor: "#b91c1c" };
+    case "ADS":
+      return { badgeClass: "bg-teal-500", hexColor: "#14b8a6" };
+    case "GESTAO-EMP-V":
+      return { badgeClass: "bg-emerald-700", hexColor: "#047857" };
+    case "GESTAO-EMP-N":
+      return { badgeClass: "bg-cyan-500", hexColor: "#06b6d4" };
+    case "GESTAO-SERVICOS":
+      return { badgeClass: "bg-blue-800", hexColor: "#1e40af" };
+    case "LOG-AERO":
+      return { badgeClass: "bg-amber-500", hexColor: "#f59e0b" };
+    default:
+      return { badgeClass: "bg-orange-500", hexColor: "#f97316" };
+  }
+};
+
 export function BookingCard({ booking, top, height }: BookingCardProps) {
+  const { badgeClass, hexColor } = getBookingColor(booking.type);
+
   return (
     <Dialog>
       <DialogTrigger>
         <div
           className={cn(
             "absolute left-2 right-0 mr-2 p-2.5 rounded-lg border bg-card dark:bg-[#262629] transition-all cursor-pointer overflow-hidden hover:scale-[101%]",
-            booking.color && "border-l-4"
+            hexColor && "border-l-4"
           )}
           style={{
             top: `${top}px`,
             height: `${height}px`,
-            borderLeftColor: booking.color || undefined,
+            borderLeftColor: hexColor || undefined,
             minHeight: "40px",
           }}
         >
@@ -50,10 +66,11 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
               {booking.title}
             </h4>
             <Badge
-              variant={booking.type === "Aula" ? "destructive" : "default"}
-              className="text-xs flex-shrink-0"
+              className={cn(`text-xs flex-shrink-0 text-white`, badgeClass)}
             >
-              {booking.type === "Aula" ? "Aula" : "Agendamento"}
+              {booking.type === "Agendamento"
+                ? "Agendamento"
+                : booking.type.toUpperCase()}
             </Badge>
           </div>
 
@@ -61,7 +78,8 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
             <div className="flex items-center gap-1">
               <Clock className="h-3 w-3" />
               <span>
-                {booking.startTime} - {booking.endTime}
+                {booking.startTime.split("T")[1].slice(0, 5)} -{" "}
+                {booking.endTime.split("T")[1].slice(0, 5)}
               </span>
             </div>
             {booking.user && (
@@ -72,9 +90,9 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
             )}
           </div>
 
-          {booking.resource && height > 60 && (
+          {booking.description && height > 60 && (
             <p className="text-start text-xs text-muted-foreground mt-1 line-clamp-1">
-              {booking.resource}
+              {booking.description}
             </p>
           )}
         </div>
@@ -86,7 +104,8 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
               <span>
-                {booking.startTime} - {booking.endTime}
+                {booking.startTime.split("T")[1].slice(0, 5)} -{" "}
+                {booking.endTime.split("T")[1].slice(0, 5)}
               </span>
             </div>
             {booking.user && (
@@ -96,7 +115,7 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
               </div>
             )}
           </div>
-          <span>{booking.resource}</span>
+          <span>{booking.description}</span>
         </DialogHeader>
       </DialogContent>
     </Dialog>

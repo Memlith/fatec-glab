@@ -1,8 +1,4 @@
-import { useEffect, useState } from "react";
-import { fetchBookings } from "./bookingsService";
-
 export const API_URL = "http://localhost:3333";
-
 
 export type User = {
   id?: number;
@@ -24,15 +20,15 @@ export type Equipment = {
 
 export type Booking = {
   id: string;
-  title: string;
+  createdAt: string | null;
   startTime: string;
   endTime: string;
-  user?: string;
-  type?: string;
-  repeat?: boolean;
-  description?: string;
-  room?: string;
-  color?: string;
+  repeat: boolean;
+  type: string;
+  title: string;
+  description: string;
+  user: string;
+  room: string;
 };
 
 export type Software = {

@@ -9,7 +9,8 @@ import AlertMobile from "@/components/utils/AlertMobile";
 import { ModeToggle } from "@/components/utils/mode-toggle";
 import NovaReservaForm from "@/components/utils/reserva/NovaReservaForm";
 import SectionMapa from "@/components/utils/reserva/SectionMapa";
-import { ChevronLeft, Plus } from "lucide-react";
+import UserButton from "@/components/utils/UserButton";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,7 +22,6 @@ const equipamentos = ["Laptops", "Projetor", "TV", "Makita"];
 export default function page() {
   const router = useRouter();
   const [date, setDate] = useState<Date | undefined>(new Date());
-
   const searchParams = useSearchParams();
   const dayParam = searchParams.get("date");
 
@@ -84,9 +84,7 @@ export default function page() {
               <div className="flex items-center gap-2">
                 <ModeToggle variant="secondary" />
 
-                <Button size="lg">
-                  <Plus /> Nova Reserva
-                </Button>
+                <UserButton />
               </div>
             </div>
 

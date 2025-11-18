@@ -10,58 +10,64 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createBooking } from "@/services/bookingsService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const softwares = [
-  { id: "vscode", label: "VSCode" },
-  { id: "eclipse", label: "Eclipse" },
-  { id: "java", label: "Java" },
-  { id: "node", label: "Node" },
-  { id: "autocad", label: "AutoCAD" },
-  { id: "arduino", label: "Arduino" },
-];
-
-const equipamentos = [
-  { id: "laptops", label: "Laptops" },
-  { id: "projetor", label: "Projetor" },
-  { id: "tv", label: "TV" },
-  { id: "makita", label: "Makita" },
-];
-
 const formSchema = z.object({
-  titulo: z
-    .string()
-    .min(2, "O nome da reserva deve ter no mínimo 2 caracteres"),
-  responsavel: z
-    .string()
-    .min(2, "O nome do responsável deve ter no mínimo 2 caracteres"),
-  data: z.string().min(10, "A data deve ser preenchida"),
-  recorrencia: z.boolean().optional(),
-  horaInicio: z.string().min(5, "A hora de início deve ser preenchida"),
-  horaFim: z.string().min(5, "A hora de fim deve ser preenchida"),
-  softwares: z.array(z.string()).refine((value) => value.some((item) => item)),
+  title: z.string().min(2, "O nome da reserva deve ter no mínimo 2 caracteres"),
+  type: z.string(),
+  description: z.string().optional(),
+  repeat: z.boolean().optional(),
+  startTime: z.string().min(5, "A hora de início deve ser preenchida"),
+  endTime: z.string().min(5, "A hora de fim deve ser preenchida"),
 });
 
 export default function NovaReservaForm() {
   const searchParams = useSearchParams();
-  const data = searchParams.get("date");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titulo: "",
-      responsavel: "",
-      data: data || "",
-      recorrencia: false,
-      horaInicio: "",
-      horaFim: "",
+      title: "",
+      type: "",
+      description: "",
+      repeat: false,
+      startTime: "",
+      endTime: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const data = searchParams.get("date") ?? "";
+    const room = searchParams.get("room") ?? "";
+
+    const booking = {
+      title: values.title,
+      type: values.type,
+      description: values.description,
+      repeat: values.repeat || false,
+      startTime: `${data}T${values.startTime}:00`,
+      endTime: `${data}T${values.endTime}:00`,
+      user: "Professor",
+      data,
+      room,
+    };
+
+    console.log(booking);
+
+    await createBooking(booking);
   }
 
   return (
@@ -74,7 +80,7 @@ export default function NovaReservaForm() {
           <div className="flex flex-col gap-4">
             <FormField
               control={form.control}
-              name="titulo"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Título</FormLabel>
@@ -87,33 +93,93 @@ export default function NovaReservaForm() {
 
             <FormField
               control={form.control}
-              name="responsavel"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Responsável</FormLabel>
+                  <FormLabel>
+                    Descrição{" "}
+                    <span className="text-muted-foreground text-xs">
+                      (Opcional)
+                    </span>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Responsável da reserva" {...field} />
+                    <Input placeholder="Descrição da reserva" {...field} />
                   </FormControl>
                 </FormItem>
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="recorrencia"
-              render={({ field }) => (
-                <FormItem className="flex w-full justify-center gap-2">
-                  <FormControl>
-                    <Checkbox id="recorrencia" />
-                  </FormControl>
-                  <FormLabel>A reserva se repete semanalmente?</FormLabel>
-                </FormItem>
-              )}
-            />
+            <div className="flex justify-center items-center">
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem className="flex w-full justify-center gap-2">
+                    <FormLabel>Curso/Tipo da reserva</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Curso" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Agendamento</SelectLabel>
+                            <SelectItem value="agendamento">
+                              Agendamento
+                            </SelectItem>
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Cursos</SelectLabel>
+                            <SelectItem value="DSM">DSM</SelectItem>
+                            <SelectItem value="COMEX">
+                              Comércio Exterior
+                            </SelectItem>
+                            <SelectItem value="REDES">Redes</SelectItem>
+                            <SelectItem value="ADS">ADS</SelectItem>
+                            <SelectItem value="GESTAO-EMP-V">
+                              Gestão Empresarial Vespertino
+                            </SelectItem>
+                            <SelectItem value="GESTAO-EMP-N">
+                              Gestão Empresarial Noturno
+                            </SelectItem>
+                            <SelectItem value="GESTAO-SERVICOS">
+                              Gestão de Serviços
+                            </SelectItem>
+                            <SelectItem value="LOG-AERO">
+                              Logística Aeroportuária
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="repeat"
+                render={({ field }) => (
+                  <FormItem className="flex w-full justify-center gap-2">
+                    <FormControl>
+                      <Checkbox
+                        id="recorrencia"
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>A reserva se repete semanalmente?</FormLabel>
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="horaInicio"
+                name="startTime"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Horário de início</FormLabel>
@@ -125,7 +191,7 @@ export default function NovaReservaForm() {
               />
               <FormField
                 control={form.control}
-                name="horaFim"
+                name="endTime"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Horário de Término</FormLabel>
@@ -135,90 +201,6 @@ export default function NovaReservaForm() {
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="grid grid-cols-2 gap-8">
-              <div className="flex flex-col gap-2">
-                <h1>Softwares</h1>
-                <div className="grid grid-cols-2 gap-4">
-                  {softwares.map((software) => (
-                    <FormField
-                      key={software.id}
-                      control={form.control}
-                      name="softwares"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={software.id}
-                            className="flex flex-row items-center gap-2"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(software.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([
-                                        ...field.value,
-                                        software.id,
-                                      ])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== software.id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="text-sm font-normal">
-                              {software.label}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h1>Equipamentos</h1>
-                <div className="grid grid-cols-2 gap-4">
-                  {equipamentos.map((equipamento) => (
-                    <FormField
-                      key={equipamento.id}
-                      control={form.control}
-                      name="softwares"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={equipamento.id}
-                            className="flex flex-row items-center gap-2"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(equipamento.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([
-                                        ...field.value,
-                                        equipamento.id,
-                                      ])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== equipamento.id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="text-sm font-normal">
-                              {equipamento.label}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
 

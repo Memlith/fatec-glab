@@ -70,16 +70,16 @@
   "2": {
     "terreo": [
       {
-        "id": "lab_11",
-        "label": "Lab 11",
+        "id": "lab_12",
+        "label": "Lab 12",
         "x": 100,
         "y": 940,
         "width": 600,
         "height": 800
       },
       {
-        "id": "lab_12",
-        "label": "Lab 12",
+        "id": "lab_11",
+        "label": "Lab 11",
         "x": 100,
         "y": 1800,
         "width": 600,

@@ -1,27 +1,11 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { BookingCard } from "./BookingCard";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-
-interface Booking {
-  id: string;
-  title: string;
-  startTime: string;
-  endTime: string;
-  user?: string;
-  type?: "Aula" | "Agendamento";
-  resource?: string;
-  color?: string;
-}
+import { Booking } from "@/services/api";
 
 interface DailyScheduleCardProps {
   date: Date;
@@ -31,6 +15,15 @@ interface DailyScheduleCardProps {
 const timeToMinutes = (time: string): number => {
   const [hours, minutes] = time.split(":").map(Number);
   return hours * 60 + minutes;
+};
+
+const extractTimeFromISO = (isoString: string): string => {
+  try {
+    return isoString.split("T")[1].substring(0, 5);
+  } catch (error) {
+    console.error("Error extracting time from ISO string:", isoString, error);
+    return "00:00";
+  }
 };
 
 const calculateBookingPosition = (
@@ -48,21 +41,6 @@ const calculateBookingPosition = (
 
   return { top: topOffset, height };
 };
-
-const LoaderIcon = (props: any) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-  </svg>
-);
 
 export function DailyScheduleCard({
   date,
@@ -117,7 +95,6 @@ export function DailyScheduleCard({
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 3000));
       setData(bookings);
       setIsLoading(false);
     };
@@ -126,7 +103,7 @@ export function DailyScheduleCard({
   }, [bookings]);
 
   return (
-    <Card className="w-full h-full rounded-md flex flex-col pb-0">
+    <Card className="w-full h-full rounded-md flex flex-col pb-0 ">
       <CardHeader className="pb-3 flex-shrink-0">
         <CardTitle className="text-lg font-semibold capitalize">
           {formatDate(date)}
@@ -154,7 +131,6 @@ export function DailyScheduleCard({
 
             <div className="w-px bg-border flex-shrink-0" />
 
-            {/* Grid and bookings area */}
             <div className="flex-1 relative">
               {timeSlots.map((slot, index) => (
                 <div
@@ -175,9 +151,12 @@ export function DailyScheduleCard({
 
               {!isLoading &&
                 data.map((booking) => {
+                  const startHourMinute = extractTimeFromISO(booking.startTime);
+                  const endHourMinute = extractTimeFromISO(booking.endTime);
+
                   const { top, height } = calculateBookingPosition(
-                    booking.startTime,
-                    booking.endTime,
+                    startHourMinute,
+                    endHourMinute,
                     START_HOUR,
                     HOUR_HEIGHT
                   );

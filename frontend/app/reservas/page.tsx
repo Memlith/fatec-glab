@@ -12,94 +12,28 @@ import { useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Booking } from "@/services/api";
-import { fetchBookings } from "@/services/bookingsService";
-
-
-// Criando o use state de bookings
-
-
-// const sampleBookings = [
-//   {
-//     id: "1",
-//     title: "GEST AGIL PROJ SOFT",
-//     startTime: "07:40",
-//     endTime: "09:20",
-//     user: "LILIAN",
-//     type: "Aula" as const,
-//     resource: "VSCode, Node",
-//     color: "#3b82f6",
-//   },
-//   {
-//     id: "2",
-//     title: "GEST AGIL PROJ SOFT",
-//     startTime: "09:30",
-//     endTime: "11:10",
-//     user: "LILIAN",
-//     type: "Aula" as const,
-//     resource: "Makita, Projetor",
-//     color: "#3b82f6",
-//   },
-//   {
-//     id: "3",
-//     title: "IHC",
-//     startTime: "11:20",
-//     endTime: "13:00",
-//     user: "LILIAN",
-//     type: "Aula" as const,
-//     resource: "AutoCAD",
-//     color: "#10b981",
-//   },
-//   {
-//     id: "4",
-//     title: "SIST. INT. GESTÃO",
-//     startTime: "14:30",
-//     endTime: "16:10",
-//     user: "HAMILTON",
-//     type: "Aula" as const,
-//     resource: "Projetor, TV",
-//     color: "#f59e0b",
-//   },
-//   {
-//     id: "5",
-//     title: "Reunião Equipe X",
-//     startTime: "16:30",
-//     endTime: "17:30",
-//     user: "Rogérin",
-//     type: "Agendamento" as const,
-//     resource: "VSCode, Eclipse",
-//     color: "#ef4444",
-//   },
-// ];
+import { fetchBookingByQuery } from "@/services/bookingsService";
+import UserButton from "@/components/utils/UserButton";
 
 export default function page() {
   const router = useRouter();
-  const [date, setDate] = useState<Date | undefined>(new Date());
-
   const [bookings, setBookings] = useState<Booking[]>([]);
-
-useEffect(() => {
-
-  fetchBookings(setBookings);
-}, [])
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   const searchParams = useSearchParams();
   const dayParam = searchParams.get("date");
+  const roomParam = searchParams.get("room");
 
   function formatDate(d: Date) {
     return d.toISOString().split("T")[0];
@@ -138,6 +72,20 @@ useEffect(() => {
     router.push(`?${currentParams.toString()}`, { scroll: false });
   }
 
+  useEffect(() => {
+    const loadBookings = async () => {
+      if (dayParam && roomParam) {
+        const data = await fetchBookingByQuery(dayParam, roomParam);
+
+        setBookings(data);
+      } else if (dayParam && !roomParam) {
+        handleDaySelection(date || new Date());
+      }
+    };
+
+    loadBookings();
+  }, [dayParam, roomParam]);
+
   return (
     <div className="h-screen w-full px-8 py-4 max-lg:p-4">
       <div className="h-full grid grid-cols-3 gap-4">
@@ -151,6 +99,8 @@ useEffect(() => {
 
             <div className="flex items-center gap-2">
               <ModeToggle variant="secondary" />
+
+              <UserButton />
 
               <Button size="lg" asChild>
                 <Link href={`/nova-reserva`}>
