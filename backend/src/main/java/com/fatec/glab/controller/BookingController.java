@@ -1,11 +1,13 @@
 package com.fatec.glab.controller;
 
+import com.fatec.glab.dto.booking.BookingRequestUpdateDTO;
 import com.fatec.glab.dto.booking.BookingResponseDTO;
 import com.fatec.glab.model.Booking;
 import com.fatec.glab.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -40,6 +42,7 @@ public class BookingController {
     }
 
     @PostMapping
+    @Transactional
     public Booking save(@RequestBody Booking booking) {
         return bookingService.save(booking);
     }
@@ -50,9 +53,11 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
-    public Booking update(@PathVariable String id, @RequestBody Booking booking){
-        return bookingService.update(id, booking);
-    }
+    @Transactional
+        public ResponseEntity update(@PathVariable String id, @RequestBody BookingRequestUpdateDTO booking){
+        var bookingUpdated = bookingService.update(id, booking);
+        return ResponseEntity.ok(bookingUpdated);
+        }
 
 
 }
