@@ -3,10 +3,9 @@ package com.fatec.glab.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
+import com.fatec.glab.dto.booking.BookingRequestDTO;
 import com.fatec.glab.dto.booking.BookingRequestUpdateDTO;
-import com.fatec.glab.dto.booking.BookingResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,46 +19,36 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    public Booking save(BookingRequestDTO bookingDTO) {
+        Booking booking = new Booking(bookingDTO);
+        return bookingRepository.save(booking);
+    }
+
+    public Booking getById(String id) {
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Booking com ID" + id + " não foi encontrado. "));
+    }
+
     public List<Booking> getAll() {
         return bookingRepository.findAll();
     }
 
-    public BookingResponseDTO getById(String id) {
+    public List<Booking> getBookingSearch(String roomId, LocalDate date) {
 
-        var booking = bookingRepository.findById(id);
-        if (booking.isEmpty()) {
-            throw new IdNotFoundException("Booking com ID" + id + " não foi encontrado. ");
+        if (roomId == null || date == null) {
+            return List.of();
         }
+        // Incrementar posteriomente os outros 2 metodos de pesquisa solo
 
-        return new BookingResponseDTO(booking.get());
-    }
-
-    public Booking save(Booking booking) {
-        return bookingRepository.save(booking);
-    }
-
-    public List<Booking> getBookingsByDateAndRoom(LocalDate date, String room) {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
 
-        return bookingRepository.findByRoomAndDateRange(room, startOfDay, endOfDay);
+        return bookingRepository.findByRoomAndDateRange(roomId, startOfDay, endOfDay);
+
+
     }
 
-    public void delete(String id) {
-        bookingRepository.deleteById(id);
-    }
-
-/* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
-    /**
-     * Update a booking with the given id and data.
-     *
-     * @param id the id of the booking to update
-     * @param dto the data to update the booking with
-     * @return the updated booking
-     * @throws IdNotFoundException if the booking with the given id is not found
-     */
-/* <<<<<<<<<<  039ecffe-5d4d-4b1f-a57b-72f1cf4c5b00  >>>>>>>>>>> */
-    public BookingResponseDTO update(String id, BookingRequestUpdateDTO dto) {
+    public Booking update(String id, BookingRequestUpdateDTO dto) {
 
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Booking com ID " + id + " não foi encontrado."));
@@ -69,11 +58,15 @@ public class BookingService {
         if (dto.type() != null) booking.setType(dto.type());
         if (dto.title() != null) booking.setTitle(dto.title());
         if (dto.description() != null) booking.setDescription(dto.description());
-        if (dto.user() != null) booking.setUser(dto.user());
-        if (dto.room() != null) booking.setRoom(dto.room());
+        if (dto.professorId() != null) booking.setProfessorId(dto.professorId());
+        if (dto.room() != null) booking.setRoomId(dto.room());
 
-        Booking saved = bookingRepository.save(booking);
-        return new BookingResponseDTO(saved);
+        return bookingRepository.save(booking);
     }
+
+    public void delete(String id) {
+        bookingRepository.deleteById(id);
+    }
+
 
 }

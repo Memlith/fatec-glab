@@ -3,27 +3,28 @@ package com.fatec.glab.dto.booking;
 import com.fatec.glab.model.Booking;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 public record BookingResponseDTO (
-        String id,
-        String title,
-        LocalDateTime startTime,
-        LocalDateTime endTime,
-        String userId,
-        String type,
-        String room
+     String id,
+     LocalDateTime startTime,
+     LocalDateTime endTime,
+     String professorId,
+     String type,
+     String title,
+     String description,
+     String roomId
 ) {
     public BookingResponseDTO(Booking booking) {
         this(
                 booking.getId(),
-                booking.getTitle(),
                 booking.getStartTime(),
                 booking.getEndTime(),
-                booking.getUser(),
+                booking.getProfessorId(),
                 booking.getType(),
-                booking.getRoom()
+                booking.getTitle(),
+                booking.getDescription(),
+                booking.getRoomId()
         );
     }
 }
