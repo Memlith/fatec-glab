@@ -6,6 +6,7 @@ import com.fatec.glab.dto.classroom.ClassroomRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,10 +23,4 @@ public class Classroom {
     private List<String> equipmentsId;
     private List<String> softwaresId;
 
-    public Classroom(ClassroomRequestDTO classroomDTO) {
-        this.name = classroomDTO.name();
-        this.capacity = classroomDTO.capacity();
-        this.equipmentsId = classroomDTO.equipmentsId();
-        this.softwaresId = classroomDTO.softwaresId();
-    }
 }

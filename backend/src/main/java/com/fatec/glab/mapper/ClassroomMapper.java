@@ -1,18 +1,23 @@
 package com.fatec.glab.mapper;
 
+import com.fatec.glab.dto.classroom.ClassroomRequestDTO;
+import com.fatec.glab.dto.classroom.ClassroomRequestUpdateDTO;
 import com.fatec.glab.dto.classroom.ClassroomResponseDTO;
 import com.fatec.glab.model.Classroom;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+
 
 import java.util.List;
 
-@Component
-public class ClassroomMapper {
-    public ClassroomResponseDTO toDTO(Classroom classroom) {
-        return new ClassroomResponseDTO(classroom);
-    }
+@Mapper(componentModel = "spring")
+public interface ClassroomMapper {
 
-    public List<ClassroomResponseDTO> toDTO(List<Classroom> classroom) {
-        return classroom.stream().map(this::toDTO).toList();
-    }
+    ClassroomResponseDTO toDTO(Classroom classroom);
+
+    List<ClassroomResponseDTO> toDTO(List<Classroom> classrooms);
+
+    Classroom toEntity(ClassroomRequestDTO classroomRequestDTO);
+
+    void updateFromDTO(ClassroomRequestUpdateDTO classroomRequestDTO, @MappingTarget Classroom classroom);
 }

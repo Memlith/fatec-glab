@@ -1,11 +1,8 @@
 package com.fatec.glab.dto.classroom;
 
-import com.fatec.glab.model.Classroom;
-
 import java.util.List;
 
-public record ClassroomResponseDTO(
-        String id,
+public record ClassroomRequestUpdateDTO(
         String name,
         Integer capacity,
         List<String> equipmentsId,

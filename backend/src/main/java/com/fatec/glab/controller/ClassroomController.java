@@ -1,23 +1,19 @@
 package com.fatec.glab.controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.fatec.glab.dto.classroom.ClassroomRequestDTO;
+import com.fatec.glab.dto.classroom.ClassroomRequestUpdateDTO;
 import com.fatec.glab.dto.classroom.ClassroomResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.fatec.glab.mapper.ClassroomMapper;
 import com.fatec.glab.model.Classroom;
 import com.fatec.glab.service.ClassroomService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/classrooms")
@@ -26,30 +22,53 @@ public class ClassroomController {
     @Autowired
     private ClassroomService classroomService;
 
+    @Autowired
+    private ClassroomMapper classroomMapper;
+
     @PostMapping
-    public ResponseEntity<ClassroomResponseDTO> create(@RequestBody ClassroomRequestDTO classroomRequestDTO) {
-        ClassroomResponseDTO classroom = new Classroom(classroomRequestDTO);
-        return classroomService.save(classroom);
+    @Transactional
+    public ResponseEntity<ClassroomResponseDTO> create(
+            @RequestBody ClassroomRequestDTO classroomRequestDTO,
+            UriComponentsBuilder uriBuilder) {
+
+        Classroom savedClassroom = classroomService.save(classroomRequestDTO);
+
+        URI location = uriBuilder
+                .path("/classrooms/{id}").buildAndExpand(savedClassroom.getId()).toUri();
+
+        ClassroomResponseDTO responseDTO = classroomMapper.toDTO(savedClassroom);
+        return ResponseEntity.created(location).body(responseDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClassroomResponseDTO> getById(@PathVariable String id) {
-        return classroomService.getById(id);
+        Classroom classroom = classroomService.getById(id);
+        ClassroomResponseDTO responseDTO = classroomMapper.toDTO(classroom);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<ClassroomResponseDTO>> getAll() {
-        return classroomService.getAll();
+        List<Classroom> classrooms = classroomService.getAll();
+        List<ClassroomResponseDTO> responseDTOs = classroomMapper.toDTO(classrooms);
+        return ResponseEntity.ok(responseDTOs);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Classroom> update(@PathVariable String id, @RequestBody Classroom classroom) {
-        return classroomService.update(id, classroom);
+    @Transactional
+    public ResponseEntity<ClassroomResponseDTO> update(
+            @PathVariable String id,
+            @RequestBody ClassroomRequestUpdateDTO classroomRequestDTO) {
+
+        Classroom updatedClassroom = classroomService.update(id, classroomRequestDTO);
+        ClassroomResponseDTO responseDTO = classroomMapper.toDTO(updatedClassroom);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Void> delete(@PathVariable String id) {
         classroomService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
