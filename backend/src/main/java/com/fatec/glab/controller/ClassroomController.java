@@ -66,7 +66,6 @@ public class ClassroomController {
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<Void> delete(@PathVariable String id) {
         classroomService.delete(id);
         return ResponseEntity.noContent().build();

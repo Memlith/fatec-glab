@@ -9,6 +9,7 @@ import com.fatec.glab.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class EquipmentController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<EquipmentResponseDTO> create(@RequestBody EquipmentRequestDTO equipmentRequestDTO) {
         Equipment savedEquipment = equipmentService.save(equipmentRequestDTO);
         EquipmentResponseDTO responseDTO = equipmentMapper.toDTO(savedEquipment);
@@ -45,6 +47,7 @@ public class EquipmentController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<EquipmentResponseDTO> update(@PathVariable String id, @RequestBody EquipmentRequestUpdateDTO equipmentRequestDTO) {
         Equipment updatedEquipment = equipmentService.update(id, equipmentRequestDTO);
         EquipmentResponseDTO responseDTO = equipmentMapper.toDTO(updatedEquipment);
