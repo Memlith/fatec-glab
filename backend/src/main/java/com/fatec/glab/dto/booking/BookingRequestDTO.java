@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 public record BookingRequestDTO(
 
         @NotNull()
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
         LocalDateTime startTime,
 
         @NotNull()
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
         LocalDateTime endTime,
 
         @NotNull()

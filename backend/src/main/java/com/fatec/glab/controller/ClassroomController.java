@@ -6,6 +6,7 @@ import com.fatec.glab.dto.classroom.ClassroomResponseDTO;
 import com.fatec.glab.mapper.ClassroomMapper;
 import com.fatec.glab.model.Classroom;
 import com.fatec.glab.service.ClassroomService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class ClassroomController {
     @PostMapping
     @Transactional
     public ResponseEntity<ClassroomResponseDTO> create(
-            @RequestBody ClassroomRequestDTO classroomRequestDTO,
+            @Valid @RequestBody ClassroomRequestDTO classroomRequestDTO,
             UriComponentsBuilder uriBuilder) {
 
         Classroom savedClassroom = classroomService.save(classroomRequestDTO);
@@ -58,7 +59,7 @@ public class ClassroomController {
     @Transactional
     public ResponseEntity<ClassroomResponseDTO> update(
             @PathVariable String id,
-            @RequestBody ClassroomRequestUpdateDTO classroomRequestDTO) {
+            @Valid @RequestBody ClassroomRequestUpdateDTO classroomRequestDTO) {
 
         Classroom updatedClassroom = classroomService.update(id, classroomRequestDTO);
         ClassroomResponseDTO responseDTO = classroomMapper.toDTO(updatedClassroom);

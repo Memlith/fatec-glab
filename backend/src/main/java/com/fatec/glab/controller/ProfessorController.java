@@ -6,6 +6,7 @@ import com.fatec.glab.dto.professor.ProfessorResponseDTO;
 import com.fatec.glab.mapper.ProfessorMapper;
 import com.fatec.glab.model.Professor;
 import com.fatec.glab.service.ProfessorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class ProfessorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ProfessorResponseDTO> create(@RequestBody ProfessorRequestDTO professorRequestDTO) {
+    public ResponseEntity<ProfessorResponseDTO> create(@Valid @RequestBody ProfessorRequestDTO professorRequestDTO) {
         Professor savedProfessor = professorService.save(professorRequestDTO);
         ProfessorResponseDTO responseDTO = professorMapper.toDTO(savedProfessor);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -48,7 +49,7 @@ public class ProfessorController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ProfessorResponseDTO> update(@PathVariable String id, @RequestBody ProfessorRequestUpdateDTO professorRequestDTO) {
+    public ResponseEntity<ProfessorResponseDTO> update(@PathVariable String id, @Valid @RequestBody ProfessorRequestUpdateDTO professorRequestDTO) {
         Professor updatedProfessor = professorService.update(id, professorRequestDTO);
         ProfessorResponseDTO responseDTO = professorMapper.toDTO(updatedProfessor);
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
