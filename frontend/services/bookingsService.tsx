@@ -44,29 +44,45 @@ export async function createBooking(booking: {
   endTime: string;
 }) {
   try {
-    await fetch(`${API_URL}/bookings`, {
+    const response = await fetch(`${API_URL}/bookings`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(booking),
     });
+    return response.json();
   } catch (error) {
     console.error("Failed to create booking:", error);
   }
 }
 
-export async function updateBooking(id: number, booking: Booking) {
+export async function updateBooking(
+  id: string,
+  booking: {
+    title: string;
+    type: string;
+    description?: string;
+    repeat: boolean;
+    user: string;
+    data: string;
+    room: string;
+    startTime: string;
+    endTime: string;
+  }
+) {
   try {
-    await fetch(`${API_URL}/bookings/${id}`, {
+    const response = await fetch(`${API_URL}/bookings/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(booking),
     });
+
+    return response.json();
   } catch (error) {
     console.error("Failed to update booking:", error);
   }
 }
 
-export async function deleteBooking(id: number) {
+export async function deleteBooking(id: string) {
   try {
     await fetch(`${API_URL}/bookings/${id}`, { method: "DELETE" });
   } catch (error) {

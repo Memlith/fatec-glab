@@ -224,12 +224,20 @@
   "3": {
     "terreo": [
       {
-        "id": "05",
-        "label": "Sala 05",
+        "id": "lab_09",
+        "label": "Lab 09",
         "x": 100,
-        "y": 940,
+        "y": 1040,
         "width": 600,
         "height": 800
+      },
+      {
+        "id": "lab_10",
+        "label": "Lab 10",
+        "x": 100,
+        "y": 100,
+        "width": 800,
+        "height": 900
       }
     ]
   }

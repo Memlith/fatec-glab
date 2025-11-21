@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar";
-import { LogOut, SquareArrowOutUpRight, User2 } from "lucide-react";
+import { Calendar, LogOut, Settings, User2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,11 +37,22 @@ export default function UserButton() {
               redirect("/minhas-reservas");
             }}
           >
-            <SquareArrowOutUpRight />
+            <Calendar />
             Minhas Reservas
           </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              redirect("/admin/gerenciamento-de-salas");
+            }}
+          >
+            <Settings />
+            Painel do Administrador
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="text-red-400" onClick={() => {}}>
+          <DropdownMenuItem
+            className="text-red-400 hover:!text-red-700"
+            onClick={() => {}}
+          >
             <LogOut className="stroke-red-400" />
             Sair
           </DropdownMenuItem>

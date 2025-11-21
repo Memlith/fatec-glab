@@ -3,8 +3,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Info } from "lucide-react";
 import { useState } from "react";
-import { SalaAlert } from "./SalaAlert";
 import rectsData from "./rects.json";
+import { SalaAlert } from "../SalaAlert";
 
 interface Rect {
   x: number;

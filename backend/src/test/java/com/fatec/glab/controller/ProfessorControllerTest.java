@@ -1,6 +1,5 @@
 package com.fatec.glab.controller;
 
-import com.fatec.glab.dto.professor.ProfessorResponseDTO;
 import com.fatec.glab.service.ProfessorService;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -33,8 +32,6 @@ class ProfessorControllerTest {
     void shouldReturnStatus200WhenListingAllAvailableUsers() throws Exception {
         //Arrange
         BDDMockito.given(professorService.getAll()).willReturn(List.of(
-                new ProfessorResponseDTO("1", "AA", "AA@example.com", "AAAA"),
-                new ProfessorResponseDTO("2", "BB", "BB@example.com", "AAAA")
         ));
 
         //Act

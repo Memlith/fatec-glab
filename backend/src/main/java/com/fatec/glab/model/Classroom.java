@@ -14,7 +14,23 @@ public class Classroom {
     private String id;
     private String name;
     private Integer capacity;
-    private List<String> equipmentsId;
-    private List<String> softwaresId;
+    private List<Equipment> equipmentsId;
+    private List<Software> softwaresId;
+    public void setName(String name2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setName'");
+    }
+    public void setCapacity(Integer capacity2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setCapacity'");
+    }
+    public void setEquipments(List<Equipment> equipmentsId2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setEquipments'");
+    }
+    public void setSoftwares(List<Software> softwaresId2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setSoftwares'");
+    }
 
 }

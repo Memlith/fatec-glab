@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import roomsData from "./rooms.json";
 
-interface Room {
+export interface Room {
   id: string;
   label: string;
   x: number;
@@ -25,7 +25,7 @@ interface Building {
   [floor: string]: Room[];
 }
 
-interface RoomsData {
+export interface RoomsData {
   [building: string]: Building;
 }
 
@@ -116,7 +116,7 @@ export default function SectionMapa() {
   const isLoading = room === null;
 
   return (
-    <div className="h-full bg-card flex flex-col gap-4 rounded-xl border p-4 shadow-sm">
+    <div className="h-full bg-card flex flex-col gap-4 rounded-xl lg:border p-4 shadow-sm">
       {isLoading ? (
         <div className="flex items-center justify-center h-full">
           <p className="text-muted-foreground">Carregando mapa...</p>

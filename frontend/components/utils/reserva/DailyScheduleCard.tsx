@@ -171,24 +171,6 @@ export function DailyScheduleCard({
                   );
                 })}
 
-              {/* {bookings.map((booking) => {
-                const { top, height } = calculateBookingPosition(
-                  booking.startTime,
-                  booking.endTime,
-                  START_HOUR,
-                  HOUR_HEIGHT
-                );
-
-                return (
-                  <BookingCard
-                    key={booking.id}
-                    booking={booking}
-                    top={top}
-                    height={height}
-                  />
-                );
-              })} */}
-
               <div style={{ height: `${timeSlots.length * HOUR_HEIGHT}px` }} />
             </div>
           </div>

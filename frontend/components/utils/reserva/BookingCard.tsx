@@ -11,6 +11,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Booking } from "@/services/api";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import EditarReservaForm from "./EditarReservaForm";
 
 interface BookingCardProps {
   booking: Booking;
@@ -99,7 +106,14 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{booking.title}</DialogTitle>
+          <DialogTitle className="flex gap-2 items-center">
+            {booking.title}
+          </DialogTitle>
+          <Badge className={cn(`text-xs flex-shrink-0 text-white`, badgeClass)}>
+            {booking.type === "Agendamento"
+              ? "Agendamento"
+              : booking.type.toUpperCase()}
+          </Badge>
           <div className="flex items-center text-md gap-2 text-muted-foreground">
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
@@ -116,6 +130,15 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
             )}
           </div>
           <span>{booking.description}</span>
+
+          <Accordion type="single" collapsible>
+            <AccordionItem value="editar">
+              <AccordionTrigger>Editar</AccordionTrigger>
+              <AccordionContent className="bg-muted px-4 rounded-lg">
+                <EditarReservaForm booking={booking} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </DialogHeader>
       </DialogContent>
     </Dialog>

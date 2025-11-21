@@ -21,8 +21,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createBooking } from "@/services/bookingsService";
+import { Booking } from "@/services/api";
+import { deleteBooking, updateBooking } from "@/services/bookingsService";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Check, Trash } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -45,18 +47,22 @@ const formSchema = z.object({
     .min(5, "A hora de término deve ser preenchida"),
 });
 
-export default function NovaReservaForm() {
+interface EditarReservaFormProps {
+  booking: Booking;
+}
+
+export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
   const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      type: "",
-      description: "",
-      repeat: false,
-      startTime: "",
-      endTime: "",
+      title: booking.title,
+      type: booking.type,
+      description: booking.description,
+      repeat: booking.repeat,
+      startTime: booking.startTime.split("T")[1].slice(0, 5),
+      endTime: booking.endTime.split("T")[1].slice(0, 5),
     },
   });
 
@@ -64,33 +70,38 @@ export default function NovaReservaForm() {
     const data = searchParams.get("date") ?? "";
     const room = searchParams.get("room") ?? "";
 
-    const booking = {
-      title: values.title,
-      type: values.type,
-      description: values.description,
-      repeat: values.repeat || false,
-      startTime: `${data}T${values.startTime}:00`,
-      endTime: `${data}T${values.endTime}:00`,
-      user: "Professor",
-      data,
-      room,
-    };
+    try {
+      const newBooking = {
+        title: values.title,
+        type: values.type,
+        description: values.description,
+        repeat: values.repeat || false,
+        startTime: `${data}T${values.startTime}:00`,
+        endTime: `${data}T${values.endTime}:00`,
+        user: "Professor",
+        data,
+        room,
+      };
 
-    const response = await createBooking(booking);
+      const response = await updateBooking(booking.id, newBooking);
 
-    if (response.createdAt) {
-      toast.success("Reserva criada com sucesso!");
-      return;
+      if (response.id) {
+        toast.success("Reserva alterada com sucesso!");
+        return;
+      }
+    } catch (error) {
+      toast.error("Erro ao alterar reserva, tente novamente mais tarde.");
+    } finally {
+      window.location.reload();
     }
-    toast.error("Erro ao criar reserva, tente novamente mais tarde.");
   }
 
   return (
-    <div className="h-full border rounded-md shadow-sm">
+    <div className="pt-4">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-full flex flex-col justify-between p-4"
+          className="h-full flex flex-col justify-between"
         >
           <div className="flex flex-col gap-4">
             <FormField
@@ -131,7 +142,7 @@ export default function NovaReservaForm() {
                 control={form.control}
                 name="type"
                 render={({ field }) => (
-                  <FormItem className="flex w-full justify-center gap-2">
+                  <FormItem className="flex flex-col w-full justify-center gap-2">
                     <FormLabel>Curso/Tipo da reserva</FormLabel>
                     <FormControl>
                       <Select
@@ -227,7 +238,20 @@ export default function NovaReservaForm() {
             </div>
           </div>
 
-          <Button type="submit">Criar reserva</Button>
+          <div className="w-full grid grid-cols-2 gap-4 mt-4">
+            <Button
+              variant="destructive"
+              onClick={() => deleteBooking(booking.id)}
+            >
+              <Trash />
+              Deletar Reserva
+            </Button>
+
+            <Button type="submit">
+              <Check />
+              Salvar Alterações
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
