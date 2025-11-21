@@ -1,7 +1,5 @@
 package com.fatec.glab.dto.classroom;
 
-import com.fatec.glab.model.Classroom;
-
 import java.util.List;
 
 public record ClassroomResponseDTO(

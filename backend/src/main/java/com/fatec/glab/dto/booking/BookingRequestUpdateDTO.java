@@ -14,6 +14,6 @@ public record BookingRequestUpdateDTO(
         String title,
         String description,
         String professorId,
-        String room
+        String roomId
 ) {
 }

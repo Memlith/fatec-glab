@@ -20,5 +20,4 @@ public interface BookingMapper {
     Booking toEntity(BookingRequestDTO bookingRequestDTO);
 
     void updateFromDTO(BookingRequestUpdateDTO dto, @MappingTarget Booking booking);
-
 }

@@ -1,5 +1,6 @@
 package com.fatec.glab.exception;
 
+import com.fatec.glab.dto.error.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,14 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity handleIdNotFoundException(IdNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    public ResponseEntity<ErrorResponseDTO> handleIdNotFoundException(IdNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleGeneralException(Exception e) {
+    public ResponseEntity<ErrorResponseDTO> handleGeneralException(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Ocorreu um erro inesperado: " + e.getMessage());
+                .body(new ErrorResponseDTO("Ocorreu um erro inesperado: " + e.getMessage()));
     }
 
 }

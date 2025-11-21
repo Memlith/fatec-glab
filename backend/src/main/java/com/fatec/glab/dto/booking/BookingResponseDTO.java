@@ -1,7 +1,5 @@
 package com.fatec.glab.dto.booking;
 
-import com.fatec.glab.model.Booking;
-
 import java.time.LocalDateTime;
 
 

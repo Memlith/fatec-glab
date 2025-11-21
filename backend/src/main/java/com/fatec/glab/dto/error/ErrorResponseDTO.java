@@ -1,18 +1,16 @@
 package com.fatec.glab.dto.error;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-public class errorResponseDTO {
+@Data
+public class ErrorResponseDTO {
 
     LocalDateTime timestamp;
     String message;
 
-    public errorResponseDTO(String message){
+    public ErrorResponseDTO(String message){
         this.timestamp = LocalDateTime.now();
         this.message = message;
     }
