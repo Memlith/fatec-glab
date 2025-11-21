@@ -1,14 +1,15 @@
 package com.fatec.glab.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.fatec.glab.dto.equipment.EquipmentRequestDTO;
+import com.fatec.glab.dto.equipment.EquipmentRequestUpdateDTO;
+import com.fatec.glab.mapper.EquipmentMapper;
+import com.fatec.glab.model.Equipment;
+import com.fatec.glab.repository.EquipmentRepository;
+import com.fatec.glab.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fatec.glab.model.Equipment;
-import com.fatec.glab.exception.IdNotFoundException;
-import com.fatec.glab.repository.EquipmentRepository;
 
 @Service
 public class EquipmentService {
@@ -16,35 +17,33 @@ public class EquipmentService {
     @Autowired
     private EquipmentRepository equipmentRepository;
 
+    @Autowired
+    private EquipmentMapper equipmentMapper;
+
+    public Equipment save(EquipmentRequestDTO equipmentRequestDTO) {
+        Equipment equipment = equipmentMapper.toEntity(equipmentRequestDTO);
+        return equipmentRepository.save(equipment);
+    }
+
+    public Equipment getById(String id) {
+        return equipmentRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Equipment com ID " + id + " não encontrado."));
+    }
+
     public List<Equipment> getAll() {
         return equipmentRepository.findAll();
     }
 
-    public Optional<Equipment> getById(String id) {
-        return equipmentRepository.findById(id);
-    }
+    public Equipment update(String id, EquipmentRequestUpdateDTO equipmentRequestUpdateDTO) {
+        Equipment existingEquipment = equipmentRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Equipment com ID " + id + " não encontrado."));
 
-    public Equipment save(Equipment equipment) {
-        return equipmentRepository.save(equipment);
-    }
+        equipmentMapper.updateFromDTO(equipmentRequestUpdateDTO, existingEquipment);
 
-    public Equipment update(String id, Equipment updatedEquipment) {
-        Optional<Equipment> existingEquipment = equipmentRepository.findById(id);
-        if (existingEquipment.isPresent()) {
-            Equipment equipment = existingEquipment.get();
-            equipment.setName(updatedEquipment.getName());
-            equipment.setCategory(updatedEquipment.getCategory());
-            equipment.setManufacturer(updatedEquipment.getManufacturer());
-            equipment.setStatus(updatedEquipment.getStatus());
-            return equipmentRepository.save(equipment);
-        } else {
-            throw new IdNotFoundException("Equipment com ID " + id + " não encontrado.");
-
-        }
+        return equipmentRepository.save(existingEquipment);
     }
 
     public void delete(String id) {
         equipmentRepository.deleteById(id);
     }
-
 }

@@ -1,60 +1,59 @@
 package com.fatec.glab.controller;
 
-import java.util.List;
-
+import com.fatec.glab.dto.professor.ProfessorRequestDTO;
+import com.fatec.glab.dto.professor.ProfessorRequestUpdateDTO;
 import com.fatec.glab.dto.professor.ProfessorResponseDTO;
+import com.fatec.glab.mapper.ProfessorMapper;
+import com.fatec.glab.model.Professor;
+import com.fatec.glab.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.fatec.glab.model.Professor;
-import com.fatec.glab.service.ProfessorService;
+import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/professors")
 public class ProfessorController {
 
     @Autowired
     private ProfessorService professorService;
 
+    @Autowired
+    private ProfessorMapper professorMapper;
+
     @GetMapping
     public ResponseEntity<List<ProfessorResponseDTO>> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.professorService.getAll()) ;
+        List<Professor> professors = professorService.getAll();
+        List<ProfessorResponseDTO> responseDTOs = professorMapper.toDTO(professors);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTOs);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProfessorResponseDTO> getById(@PathVariable String id) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(this.professorService.getById(id));
-
+        Professor professor = professorService.getById(id);
+        ProfessorResponseDTO responseDTO = professorMapper.toDTO(professor);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @PostMapping
-    public ResponseEntity<ProfessorResponseDTO> create(@RequestBody Professor professor) {
-        ProfessorResponseDTO professorResponseDTO = professorService.save(professor);
-        return ResponseEntity.status(HttpStatus.CREATED).body(professorResponseDTO);
+    public ResponseEntity<ProfessorResponseDTO> create(@RequestBody ProfessorRequestDTO professorRequestDTO) {
+        Professor savedProfessor = professorService.save(professorRequestDTO);
+        ProfessorResponseDTO responseDTO = professorMapper.toDTO(savedProfessor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProfessorResponseDTO> update(@PathVariable String id, @RequestBody Professor professor) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(this.professorService.update(id, professor));
-
+    public ResponseEntity<ProfessorResponseDTO> update(@PathVariable String id, @RequestBody ProfessorRequestUpdateDTO professorRequestDTO) {
+        Professor updatedProfessor = professorService.update(id, professorRequestDTO);
+        ProfessorResponseDTO responseDTO = professorMapper.toDTO(updatedProfessor);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
-
-        this.professorService.delete(id);
-        return ResponseEntity.status(HttpStatus.OK).body("User deletado com sucesso.");
-
+        professorService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

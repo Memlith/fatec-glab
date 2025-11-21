@@ -1,15 +1,15 @@
 package com.fatec.glab.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.fatec.glab.dto.professor.ProfessorRequestDTO;
+import com.fatec.glab.dto.professor.ProfessorRequestUpdateDTO;
+import com.fatec.glab.mapper.ProfessorMapper;
 import com.fatec.glab.model.Professor;
+import com.fatec.glab.repository.ProfessorRepository;
+import com.fatec.glab.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fatec.glab.dto.professor.ProfessorResponseDTO;
-import com.fatec.glab.exception.IdNotFoundException;
-import com.fatec.glab.repository.ProfessorRepository;
 
 @Service
 public class ProfessorService {
@@ -17,52 +17,33 @@ public class ProfessorService {
     @Autowired
     private ProfessorRepository professorRepository;
 
-    public List<ProfessorResponseDTO> getAll() {
-        List<Professor> professor = professorRepository.findAll();
-        return professor.stream().map(this::convertToUserResponseDTO).toList();
+    @Autowired
+    private ProfessorMapper professorMapper;
+
+    public Professor save(ProfessorRequestDTO professorRequestDTO) {
+        Professor professor = professorMapper.toEntity(professorRequestDTO);
+        return professorRepository.save(professor);
     }
 
-    public ProfessorResponseDTO getById(String id) {
-        Optional<Professor> user = professorRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new IdNotFoundException("User com ID " + id + " não encontrado.");
-        }
-
-        return convertToUserResponseDTO(user.get());
-
+    public Professor getById(String id) {
+        return professorRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Professor com ID " + id + " não encontrado."));
     }
 
-    public ProfessorResponseDTO save(Professor professor) {
-        return convertToUserResponseDTO(professorRepository.save(professor));
+    public List<Professor> getAll() {
+        return professorRepository.findAll();
     }
 
-    public ProfessorResponseDTO update(String id, Professor updatedProfessor) {
-        Optional<Professor> existingUser = professorRepository.findById(id);
-        if (existingUser.isEmpty()) {
-            throw new IdNotFoundException("User com ID " + id + " não encontrado.");
-        }
+    public Professor update(String id, ProfessorRequestUpdateDTO professorRequestUpdateDTO) {
+        Professor existingProfessor = professorRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Professor com ID " + id + " não encontrado."));
 
-        Professor professor = existingUser.get();
-        professor.setName(updatedProfessor.getName());
-        professor.setEmail(updatedProfessor.getEmail());
-        return convertToUserResponseDTO(professorRepository.save(professor));
+        professorMapper.updateFromDTO(professorRequestUpdateDTO, existingProfessor);
 
+        return professorRepository.save(existingProfessor);
     }
 
     public void delete(String id) {
-        Optional<Professor> existingUser = professorRepository.findById(id);
-        if (existingUser.isEmpty()) {
-            throw new IdNotFoundException("User com ID " + id + " não encontrado.");
-        }
         professorRepository.deleteById(id);
     }
-
-    private ProfessorResponseDTO convertToUserResponseDTO(Professor professor) {
-        return new ProfessorResponseDTO(
-                professor.getId(),
-                professor.getName(),
-                professor.getEmail()
-        );
-    }
-
 }
