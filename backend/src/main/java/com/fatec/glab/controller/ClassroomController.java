@@ -3,7 +3,10 @@ package com.fatec.glab.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.fatec.glab.dto.classroom.ClassroomRequestDTO;
+import com.fatec.glab.dto.classroom.ClassroomResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,28 +26,29 @@ public class ClassroomController {
     @Autowired
     private ClassroomService classroomService;
 
-    @GetMapping
-    public List<Classroom> getAll() {
-        return classroomService.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Classroom> getById(@PathVariable String id) {
-        return classroomService.getById(id);
-    }
-
     @PostMapping
-    public Classroom create(@RequestBody Classroom classroom) {
+    public ResponseEntity<ClassroomResponseDTO> create(@RequestBody ClassroomRequestDTO classroomRequestDTO) {
+        ClassroomResponseDTO classroom = new Classroom(classroomRequestDTO);
         return classroomService.save(classroom);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ClassroomResponseDTO> getById(@PathVariable String id) {
+        return classroomService.getById(id);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClassroomResponseDTO>> getAll() {
+        return classroomService.getAll();
+    }
+
     @PutMapping("/{id}")
-    public Classroom update(@PathVariable String id, @RequestBody Classroom classroom) {
+    public ResponseEntity<Classroom> update(@PathVariable String id, @RequestBody Classroom classroom) {
         return classroomService.update(id, classroom);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         classroomService.delete(id);
     }
 

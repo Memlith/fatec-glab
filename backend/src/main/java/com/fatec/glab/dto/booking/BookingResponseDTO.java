@@ -15,16 +15,4 @@ public record BookingResponseDTO (
      String description,
      String roomId
 ) {
-    public BookingResponseDTO(Booking booking) {
-        this(
-                booking.getId(),
-                booking.getStartTime(),
-                booking.getEndTime(),
-                booking.getProfessorId(),
-                booking.getType(),
-                booking.getTitle(),
-                booking.getDescription(),
-                booking.getRoomId()
-        );
-    }
 }

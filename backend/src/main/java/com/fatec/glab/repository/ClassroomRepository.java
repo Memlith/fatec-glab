@@ -4,6 +4,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.fatec.glab.model.Classroom;
 
-public interface ClassroomRepository extends MongoRepository<Classroom, Object> {
+public interface ClassroomRepository extends MongoRepository<Classroom, String> {
 
 }

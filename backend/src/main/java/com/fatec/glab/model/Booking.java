@@ -37,14 +37,4 @@ public class Booking {
     private String professorId;
     private String roomId;
 
-    public Booking(BookingRequestDTO bookingDTO) {
-        this.startTime = bookingDTO.startTime();
-        this.endTime = bookingDTO.endTime();
-        this.repeat = bookingDTO.repeat();
-        this.type = bookingDTO.type();
-        this.title = bookingDTO.title();
-        this.description = bookingDTO.description();
-        this.professorId = bookingDTO.professorId();
-        this.roomId = bookingDTO.roomId();
-    }
 }

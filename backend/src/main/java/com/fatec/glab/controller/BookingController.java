@@ -18,7 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bookings")
@@ -32,47 +31,60 @@ public class BookingController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<BookingResponseDTO> save(@Valid @RequestBody BookingRequestDTO bookingRequestDTO, UriComponentsBuilder uriBuilder) {
-        Booking booking = bookingService.save(bookingRequestDTO);
+    public ResponseEntity<BookingResponseDTO> save(
+            @Valid @RequestBody BookingRequestDTO bookingRequestDTO,
+            UriComponentsBuilder uriBuilder) {
 
-        URI uri = uriBuilder.path("/bookings/{id}").buildAndExpand(booking.getId()).toUri();
+        Booking savedBooking = bookingService.save(bookingRequestDTO);
 
-        return ResponseEntity.created(uri).body(bookingMapper.toDTO(booking));
+        URI location = uriBuilder
+                .path("/bookings/{id}")
+                .buildAndExpand(savedBooking.getId())
+                .toUri();
+
+        BookingResponseDTO responseDTO = bookingMapper.toDTO(savedBooking);
+
+        return ResponseEntity.created(location).body(responseDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponseDTO> getById(@PathVariable String id) {
         Booking booking = bookingService.getById(id);
-        return ResponseEntity.ok(bookingMapper.toDTO(booking));
+        BookingResponseDTO responseDTO = bookingMapper.toDTO(booking);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<BookingResponseDTO>> findBookings() {
-        List<Booking> booking = bookingService.getAll();
-        return ResponseEntity.ok(bookingMapper.toDTO(booking));
+    public ResponseEntity<List<BookingResponseDTO>> getAll() {
+        List<Booking> bookings = bookingService.getAll();
+        List<BookingResponseDTO> responseDTOs = bookingMapper.toDTO(bookings);
+        return ResponseEntity.ok(responseDTOs);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BookingResponseDTO>> findBookingsForQuery(
+    public ResponseEntity<List<BookingResponseDTO>> search(
             @RequestParam(value = "roomId", required = false) String roomId,
             @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
         List<Booking> bookings = bookingService.getBookingSearch(roomId, date);
-
-        return ResponseEntity.ok(bookingMapper.toDTO(bookings));
+        List<BookingResponseDTO> responseDTOs = bookingMapper.toDTO(bookings);
+        return ResponseEntity.ok(responseDTOs);
     }
-
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<BookingResponseDTO> update(@PathVariable String id, @Valid @RequestBody BookingRequestUpdateDTO booking) {
-        var bookingUpdated = bookingService.update(id, booking);
-        return ResponseEntity.ok(bookingMapper.toDTO(bookingUpdated));
+    public ResponseEntity<BookingResponseDTO> update(
+            @PathVariable String id,
+            @Valid @RequestBody BookingRequestUpdateDTO bookingUpdateDTO) {
+
+        Booking updatedBooking = bookingService.update(id, bookingUpdateDTO);
+        BookingResponseDTO responseDTO = bookingMapper.toDTO(updatedBooking);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         bookingService.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 }

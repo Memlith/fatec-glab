@@ -1,12 +1,22 @@
 package com.fatec.glab.dto.classroom;
 
+import com.fatec.glab.model.Classroom;
+
 import java.util.List;
 
 public record ClassroomResponseDTO(
-        Long id,
+        String id,
         String name,
         Integer capacity,
-        List<Long> equipmentsId,
-        List<Long> softwaresId
+        List<String> equipmentsId,
+        List<String> softwaresId
 ) {
+    public ClassroomResponseDTO(Classroom classroom) {
+        this(
+                classroom.getId(),
+                classroom.getName(),
+                classroom.getCapacity(),
+                classroom.getEquipmentsId(),
+                classroom.getSoftwaresId());
+    }
 }

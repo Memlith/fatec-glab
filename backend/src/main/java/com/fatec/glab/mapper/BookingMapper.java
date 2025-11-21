@@ -1,22 +1,24 @@
 package com.fatec.glab.mapper;
 
 import com.fatec.glab.dto.booking.BookingRequestDTO;
+import com.fatec.glab.dto.booking.BookingRequestUpdateDTO;
 import com.fatec.glab.dto.booking.BookingResponseDTO;
 import com.fatec.glab.model.Booking;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+
 
 import java.util.List;
 
-@Component
-public class BookingMapper {
+@Mapper(componentModel = "spring")
+public interface BookingMapper {
 
+    BookingResponseDTO toDTO(Booking booking);
 
-    public BookingResponseDTO toDTO(Booking booking) {
-        return new BookingResponseDTO(booking);
-    }
+    List<BookingResponseDTO> toDTO(List<Booking> bookings);
 
-    public List<BookingResponseDTO> toDTO(List<Booking> bookings) {
-        return bookings.stream().map(this::toDTO).toList();
-    }
+    Booking toEntity(BookingRequestDTO bookingRequestDTO);
+
+    void updateFromDTO(BookingRequestUpdateDTO dto, @MappingTarget Booking booking);
 
 }

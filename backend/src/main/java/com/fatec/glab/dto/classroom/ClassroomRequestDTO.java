@@ -13,8 +13,8 @@ public record ClassroomRequestDTO(
         @NotNull
         Integer capacity,
 
-        List<Long> equipmentsId,
-        List<Long> softwaresId
+        List<String> equipmentsId,
+        List<String> softwaresId
 
 
 ) {
