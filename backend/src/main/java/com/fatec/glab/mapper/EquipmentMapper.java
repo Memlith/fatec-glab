@@ -5,6 +5,8 @@ import com.fatec.glab.dto.equipment.EquipmentRequestUpdateDTO;
 import com.fatec.glab.dto.equipment.EquipmentResponseDTO;
 import com.fatec.glab.model.Equipment;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -15,7 +17,9 @@ public interface EquipmentMapper {
 
     List<EquipmentResponseDTO> toDTO(List<Equipment> equipmentList);
 
+    @Mapping(target = "id", ignore = true)
     Equipment toEntity(EquipmentRequestDTO equipmentRequestDTO);
 
-    void updateFromDTO(EquipmentRequestUpdateDTO equipmentRequestUpdateDTO, Equipment equipment);
+    @Mapping(target = "id", ignore = true)
+    void updateFromDTO(EquipmentRequestUpdateDTO equipmentRequestUpdateDTO, @MappingTarget Equipment equipment);
 }

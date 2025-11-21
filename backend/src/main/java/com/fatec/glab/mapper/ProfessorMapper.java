@@ -5,6 +5,8 @@ import com.fatec.glab.dto.professor.ProfessorRequestUpdateDTO;
 import com.fatec.glab.dto.professor.ProfessorResponseDTO;
 import com.fatec.glab.model.Professor;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -15,7 +17,9 @@ public interface ProfessorMapper {
 
     List<ProfessorResponseDTO> toDTO(List<Professor> professors);
 
+    @Mapping(target = "id", ignore = true)
     Professor toEntity(ProfessorRequestDTO professorRequestDTO);
 
-    void updateFromDTO(ProfessorRequestUpdateDTO professorRequestUpdateDTO, Professor professor);
+    @Mapping(target = "id", ignore = true)
+    void updateFromDTO(ProfessorRequestUpdateDTO professorRequestUpdateDTO, @MappingTarget Professor professor);
 }

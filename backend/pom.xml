@@ -18,7 +18,7 @@
     <name>glab</name>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>17</java.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
     </properties>
@@ -97,6 +97,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <release>${java.version}</release>
                     <annotationProcessorPaths>
                         <!-- Lombok -->
                         <path>

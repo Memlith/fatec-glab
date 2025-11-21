@@ -5,6 +5,7 @@ import com.fatec.glab.dto.classroom.ClassroomRequestUpdateDTO;
 import com.fatec.glab.dto.classroom.ClassroomResponseDTO;
 import com.fatec.glab.model.Classroom;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
@@ -17,7 +18,9 @@ public interface ClassroomMapper {
 
     List<ClassroomResponseDTO> toDTO(List<Classroom> classrooms);
 
+    @Mapping(target = "id", ignore = true)
     Classroom toEntity(ClassroomRequestDTO classroomRequestDTO);
 
+    @Mapping(target = "id", ignore = true)
     void updateFromDTO(ClassroomRequestUpdateDTO classroomRequestDTO, @MappingTarget Classroom classroom);
 }
