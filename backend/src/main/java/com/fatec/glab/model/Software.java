@@ -8,13 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "softwares")
 public class Software {
 
-
     @Id
     private String id;
     private String name;
-    public void setName(String name2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setName'");
-    }
 
 }

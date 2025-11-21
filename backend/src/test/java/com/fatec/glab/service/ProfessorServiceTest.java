@@ -31,7 +31,7 @@ public class ProfessorServiceTest {
     @Test
     void deveriaCriarUsuario() {
         //Arrange
-        this.dto = new ProfessorResponseDTO("1", "Caio", "teste@teste.com");
+        this.dto = new ProfessorResponseDTO("1", "Caio", "teste@teste.com", "admin");
         given(professorRepository.save(professor)).willReturn(professor);
         //Act
         professorService.save(professor);
@@ -51,7 +51,7 @@ public class ProfessorServiceTest {
     @Test
     void deveriaListarUsuarioPorId() {
         //Arrange
-        this.dto = new ProfessorResponseDTO("1", "Caio", "teste@teste.com");
+        this.dto = new ProfessorResponseDTO("1", "Caio", "teste@teste.com", "admin");
         given(professorRepository.findById("1")).willReturn(Optional.of(professor));
         //Act
         professorService.getById("1");
@@ -61,7 +61,7 @@ public class ProfessorServiceTest {
 
     @Test
     void deveriaAtualizarUsuario() {
-        this.dto = new ProfessorResponseDTO("1", "Caio", "teste@teste.com");
+        this.dto = new ProfessorResponseDTO("1", "Caio", "teste@teste.com", "admin");
         given(professorRepository.findById("1")).willReturn(Optional.of(professor));
         given(professorRepository.save(professor)).willReturn(professor);
         //Act
