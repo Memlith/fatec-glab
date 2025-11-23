@@ -1,112 +1,109 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { BookingCard } from "./BookingCard";
-import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Booking } from "@/services/api";
+import { BookingCard } from "./BookingCard";
+
+const HOUR_HEIGHT = 60;
+const START_HOUR = 7;
+
+const toMinutes = (time: string): number => {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+};
+
+const extractTimeFromISO = (iso: string): string => {
+  try {
+    return iso.split("T")[1].substring(0, 5);
+  } catch {
+    return "00:00";
+  }
+};
+
+const calculateVerticalPosition = (
+  startTime: string,
+  endTime: string,
+  startHour: number
+) => {
+  const startMinutes = toMinutes(startTime);
+  const endMinutes = toMinutes(endTime);
+  const baseMinutes = startHour * 60;
+
+  return {
+    top: ((startMinutes - baseMinutes) / 60) * HOUR_HEIGHT,
+    height: ((endMinutes - startMinutes) / 60) * HOUR_HEIGHT,
+  };
+};
 
 interface DailyScheduleCardProps {
   date: Date;
   bookings?: Booking[];
 }
 
-const timeToMinutes = (time: string): number => {
-  const [hours, minutes] = time.split(":").map(Number);
-  return hours * 60 + minutes;
-};
-
-const extractTimeFromISO = (isoString: string): string => {
-  try {
-    return isoString.split("T")[1].substring(0, 5);
-  } catch (error) {
-    console.error("Error extracting time from ISO string:", isoString, error);
-    return "00:00";
-  }
-};
-
-const calculateBookingPosition = (
-  startTime: string,
-  endTime: string,
-  startHour: number,
-  hourHeight: number
-) => {
-  const startMinutes = timeToMinutes(startTime);
-  const endMinutes = timeToMinutes(endTime);
-  const startHourMinutes = startHour * 60;
-
-  const topOffset = ((startMinutes - startHourMinutes) / 60) * hourHeight;
-  const height = ((endMinutes - startMinutes) / 60) * hourHeight;
-
-  return { top: topOffset, height };
-};
-
 export function DailyScheduleCard({
   date,
   bookings = [],
 }: DailyScheduleCardProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<Booking[]>([]);
-  const [currentTimePosition, setCurrentTimePosition] = useState<number | null>(
-    null
+  const [currentTimePos, setCurrentTimePos] = useState<number | null>(null);
+
+  const formattedDate = useMemo(
+    () =>
+      new Intl.DateTimeFormat("pt-BR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      }).format(date),
+    [date]
   );
 
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat("pt-BR", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-    }).format(date);
-  };
-
-  const getTimeSlots = () => {
-    const slots = [];
-    for (let hour = 7; hour <= 24; hour++) {
-      slots.push(`${hour.toString().padStart(2, "0")}:00`);
-    }
-    return slots;
-  };
-
-  const timeSlots = getTimeSlots();
-  const currentTime = new Intl.DateTimeFormat("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date());
-
-  const HOUR_HEIGHT = 60;
-  const START_HOUR = 7;
-
-  const getCurrentTimePosition = () => {
-    const currentMinutes = timeToMinutes(currentTime);
-    const startMinutes = START_HOUR * 60;
-    if (currentMinutes >= startMinutes && currentMinutes <= 24 * 60) {
-      const position = ((currentMinutes - startMinutes) / 60) * HOUR_HEIGHT;
-      setCurrentTimePosition(position);
-      return position;
-    }
-    return null;
-  };
-
-  useEffect(() => {
-    setInterval(getCurrentTimePosition, 300000);
+  const timeSlots = useMemo(() => {
+    return Array.from({ length: 24 - START_HOUR + 1 }, (_, i) => {
+      const hour = i + START_HOUR;
+      return `${hour.toString().padStart(2, "0")}:00`;
+    });
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setData(bookings);
-      setIsLoading(false);
+    const updateTimePosition = () => {
+      const now = new Date();
+      const current = `${now.getHours().toString().padStart(2, "0")}:${now
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`;
+
+      const currentMinutes = toMinutes(current);
+      const startMinutes = START_HOUR * 60;
+
+      if (currentMinutes >= startMinutes && currentMinutes <= 24 * 60) {
+        return setCurrentTimePos(
+          ((currentMinutes - startMinutes) / 60) * HOUR_HEIGHT
+        );
+      }
+
+      setCurrentTimePos(null);
     };
 
-    fetchData();
+    updateTimePosition();
+    const timer = setInterval(updateTimePosition, 5 * 60 * 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
   }, [bookings]);
 
   return (
-    <Card className="w-full h-full rounded-md flex flex-col pb-0 ">
+    <Card className="w-full h-full rounded-md flex flex-col pb-0">
       <CardHeader className="pb-3 flex-shrink-0">
         <CardTitle className="text-lg font-semibold capitalize">
-          {formatDate(date)}
+          {formattedDate}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
           {bookings.length} {bookings.length === 1 ? "reserva" : "reservas"}{" "}
@@ -115,14 +112,14 @@ export function DailyScheduleCard({
       </CardHeader>
 
       <ScrollArea className="h-[73svh] max-2xl:h-[65svh]">
-        <CardContent className="pb-4">
+        <CardContent className="pb-4 relative">
           <div className="flex gap-4">
             <div className="flex-shrink-0 w-12">
               {timeSlots.map((slot) => (
                 <div
                   key={slot}
                   className="text-sm font-medium text-muted-foreground"
-                  style={{ height: `${HOUR_HEIGHT}px` }}
+                  style={{ height: HOUR_HEIGHT }}
                 >
                   {slot}
                 </div>
@@ -132,46 +129,41 @@ export function DailyScheduleCard({
             <div className="w-px bg-border flex-shrink-0" />
 
             <div className="flex-1 relative">
-              {timeSlots.map((slot, index) => (
+              {timeSlots.map((_, idx) => (
                 <div
-                  key={`grid-${slot}`}
+                  key={idx}
                   className="absolute w-full border-t border-border"
-                  style={{ top: `${index * HOUR_HEIGHT}px` }}
+                  style={{ top: idx * HOUR_HEIGHT }}
                 />
               ))}
 
-              {currentTimePosition !== null && (
+              {currentTimePos !== null && (
                 <div
                   className="absolute w-full border-t-2 border-red-500 z-10"
-                  style={{ top: `${currentTimePosition}px` }}
+                  style={{ top: currentTimePos }}
                 >
                   <div className="absolute -left-2 -top-1.5 w-3 h-3 rounded-full bg-red-500" />
                 </div>
               )}
 
               {!isLoading &&
-                data.map((booking) => {
-                  const startHourMinute = extractTimeFromISO(booking.startTime);
-                  const endHourMinute = extractTimeFromISO(booking.endTime);
+                bookings.map((booking) => {
+                  const start = extractTimeFromISO(booking.startTime);
+                  const end = extractTimeFromISO(booking.endTime);
 
-                  const { top, height } = calculateBookingPosition(
-                    startHourMinute,
-                    endHourMinute,
-                    START_HOUR,
-                    HOUR_HEIGHT
-                  );
+                  const pos = calculateVerticalPosition(start, end, START_HOUR);
 
                   return (
                     <BookingCard
                       key={booking.id}
                       booking={booking}
-                      top={top}
-                      height={height}
+                      top={pos.top}
+                      height={pos.height}
                     />
                   );
                 })}
 
-              <div style={{ height: `${timeSlots.length * HOUR_HEIGHT}px` }} />
+              <div style={{ height: timeSlots.length * HOUR_HEIGHT }} />
             </div>
           </div>
 

@@ -89,10 +89,10 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
                 {booking.endTime.split("T")[1].slice(0, 5)}
               </span>
             </div>
-            {booking.user && (
+            {booking.professorId && (
               <div className="flex items-center gap-1">
                 <User className="h-3 w-3" />
-                <span className="truncate">{booking.user}</span>
+                <span className="truncate">{booking.professorId}</span>
               </div>
             )}
           </div>
@@ -122,10 +122,10 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
                 {booking.endTime.split("T")[1].slice(0, 5)}
               </span>
             </div>
-            {booking.user && (
+            {booking.professorId && (
               <div className="flex items-center gap-1">
                 <User className="h-4 w-4" />
-                <span className="truncate">{booking.user}</span>
+                <span className="truncate">{booking.professorId}</span>
               </div>
             )}
           </div>

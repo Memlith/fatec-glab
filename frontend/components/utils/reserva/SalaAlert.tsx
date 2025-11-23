@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 interface SalaAlertProps {
   open: boolean;
@@ -41,9 +42,12 @@ export function SalaAlert({ open, onOpenChange, roomId }: SalaAlertProps) {
                   return (
                     <div key={software} className="flex gap-2 items-center">
                       <li key={software}>{software}</li>
-                      <img
+                      <Image
+                        alt="icon"
                         src="/vscode.png"
                         className="w-4 h-4 object-cover pointer-events-none"
+                        width={16}
+                        height={16}
                       />
                     </div>
                   );
@@ -51,9 +55,12 @@ export function SalaAlert({ open, onOpenChange, roomId }: SalaAlertProps) {
                   return (
                     <div key={software} className="flex gap-2 items-center">
                       <li key={software}>{software}</li>
-                      <img
+                      <Image
+                        alt="icon"
                         src="/java.png"
                         className="w-4 h-4 object-cover pointer-events-none"
+                        width={16}
+                        height={16}
                       />
                     </div>
                   );
@@ -61,9 +68,12 @@ export function SalaAlert({ open, onOpenChange, roomId }: SalaAlertProps) {
                   return (
                     <div key={software} className="flex gap-2 items-center">
                       <li key={software}>{software}</li>
-                      <img
+                      <Image
+                        alt="icon"
                         src="/node.png"
                         className="w-4 h-4 object-cover pointer-events-none"
+                        width={16}
+                        height={16}
                       />
                     </div>
                   );
@@ -71,9 +81,12 @@ export function SalaAlert({ open, onOpenChange, roomId }: SalaAlertProps) {
                   return (
                     <div key={software} className="flex gap-2 items-center">
                       <li key={software}>{software}</li>
-                      <img
+                      <Image
+                        alt="icon"
                         src="/arduino.svg"
                         className="w-4 h-4 object-cover pointer-events-none"
+                        width={16}
+                        height={16}
                       />
                     </div>
                   );
@@ -90,9 +103,12 @@ export function SalaAlert({ open, onOpenChange, roomId }: SalaAlertProps) {
                 return (
                   <div key={equipamento} className="flex gap-2 items-center">
                     <li key={equipamento}>{equipamento}</li>
-                    <img
+                    <Image
+                      alt="icon"
                       src="/makita.png"
                       className="w-4 h-4 object-cover pointer-events-none"
+                      width={16}
+                      height={16}
                     />
                   </div>
                 );

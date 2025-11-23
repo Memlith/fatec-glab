@@ -29,12 +29,14 @@ import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import roomsData from "./mapa/rooms.json";
 
 const HH_MM_REGEX = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 const formSchema = z.object({
   title: z.string().min(2, "O nome da reserva deve ter no mínimo 2 caracteres"),
   type: z.string(),
+  roomId: z.string().min(1, "O campo sala é obrigatório"),
   description: z.string().optional(),
   repeat: z.boolean().optional(),
   startTime: z
@@ -59,6 +61,7 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
     defaultValues: {
       title: booking.title,
       type: booking.type,
+      roomId: booking.roomId,
       description: booking.description,
       repeat: booking.repeat,
       startTime: booking.startTime.split("T")[1].slice(0, 5),
@@ -68,19 +71,17 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const data = searchParams.get("date") ?? "";
-    const room = searchParams.get("room") ?? "";
 
     try {
       const newBooking = {
-        title: values.title,
-        type: values.type,
-        description: values.description,
-        repeat: values.repeat || false,
         startTime: `${data}T${values.startTime}:00`,
         endTime: `${data}T${values.endTime}:00`,
-        user: "Professor",
-        data,
-        room,
+        type: values.type,
+        title: values.title,
+        description: values.description,
+        repeat: values.repeat || false,
+        professorId: "Professor",
+        roomId: values.roomId,
       };
 
       const response = await updateBooking(booking.id, newBooking);
@@ -90,6 +91,7 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
         return;
       }
     } catch (error) {
+      console.error(error);
       toast.error("Erro ao alterar reserva, tente novamente mais tarde.");
     } finally {
       window.location.reload();
@@ -137,7 +139,25 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
               )}
             />
 
-            <div className="flex justify-center items-center">
+            <FormField
+              control={form.control}
+              name="repeat"
+              render={({ field }) => (
+                <FormItem className="flex w-full justify-center gap-2">
+                  <FormControl>
+                    <Checkbox
+                      id="recorrencia"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel>A reserva se repete semanalmente?</FormLabel>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="type"
@@ -187,19 +207,44 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
-                name="repeat"
+                name="roomId"
                 render={({ field }) => (
-                  <FormItem className="flex w-full justify-center gap-2">
+                  <FormItem className="flex flex-col w-full justify-center gap-2">
+                    <FormLabel>Sala/Laboratório</FormLabel>
                     <FormControl>
-                      <Checkbox
-                        id="recorrencia"
-                        onCheckedChange={field.onChange}
-                      />
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione a sala" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(roomsData).map((buildingKey) => (
+                            <div key={buildingKey}>
+                              {Object.entries(
+                                roomsData[buildingKey as keyof typeof roomsData]
+                              ).map(([floorKey, rooms]) => (
+                                <SelectGroup key={`${buildingKey}-${floorKey}`}>
+                                  <SelectLabel>
+                                    Prédio {buildingKey} -{" "}
+                                    {floorKey.charAt(0).toUpperCase() +
+                                      floorKey.slice(1)}
+                                  </SelectLabel>
+                                  {rooms.map((room) => (
+                                    <SelectItem key={room.id} value={room.id}>
+                                      {room.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              ))}
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </FormControl>
-                    <FormLabel>A reserva se repete semanalmente?</FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -243,12 +288,12 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
               variant="destructive"
               onClick={() => deleteBooking(booking.id)}
             >
-              <Trash />
+              <Trash className="mr-2 h-4 w-4" />
               Deletar Reserva
             </Button>
 
             <Button type="submit">
-              <Check />
+              <Check className="mr-2 h-4 w-4" />
               Salvar Alterações
             </Button>
           </div>

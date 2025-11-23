@@ -51,12 +51,12 @@ export default function NovaReservaForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      type: "",
-      description: "",
-      repeat: false,
       startTime: "",
       endTime: "",
+      type: "",
+      title: "",
+      description: "",
+      repeat: false,
     },
   });
 
@@ -65,20 +65,21 @@ export default function NovaReservaForm() {
     const room = searchParams.get("room") ?? "";
 
     const booking = {
-      title: values.title,
-      type: values.type,
-      description: values.description,
-      repeat: values.repeat || false,
       startTime: `${data}T${values.startTime}:00`,
       endTime: `${data}T${values.endTime}:00`,
-      user: "Professor",
-      data,
-      room,
+      professorId: "Professor",
+      type: values.type,
+      title: values.title,
+      description: values.description,
+      roomId: room,
+      repeat: values.repeat || false,
     };
 
     const response = await createBooking(booking);
 
-    if (response.createdAt) {
+    console.log(response);
+
+    if (response.id) {
       toast.success("Reserva criada com sucesso!");
       return;
     }

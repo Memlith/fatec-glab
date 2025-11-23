@@ -3,8 +3,10 @@
 import { forwardRef, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
-interface TimeInput24hProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {}
+type TimeInput24hProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+>;
 
 const TimeInput24h = forwardRef<HTMLInputElement, TimeInput24hProps>(
   ({ value, onChange, className, ...props }, ref) => {
@@ -68,8 +70,6 @@ const TimeInput24h = forwardRef<HTMLInputElement, TimeInput24hProps>(
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const input = e.currentTarget;
-
       if (
         [46, 8, 9, 27, 13, 37, 39].indexOf(e.keyCode) !== -1 ||
         (e.keyCode === 65 && (e.ctrlKey || e.metaKey)) ||

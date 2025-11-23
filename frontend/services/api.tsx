@@ -27,8 +27,8 @@ export type Booking = {
   type: string;
   title: string;
   description: string;
-  user: string;
-  room: string;
+  professorId: string;
+  roomId: string;
 };
 
 export type Software = {

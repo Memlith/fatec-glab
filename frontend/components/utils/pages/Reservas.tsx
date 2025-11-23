@@ -8,7 +8,7 @@ import SectionMapa from "@/components/utils/reserva/mapa/SectionMapa";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -26,6 +26,16 @@ import { Booking } from "@/services/api";
 import { fetchBookingByQuery } from "@/services/bookingsService";
 import UserButton from "@/components/utils/UserButton";
 
+function formatDate(d: Date) {
+  return d.toISOString().split("T")[0];
+}
+
+function parseDateString(dateStr: string): Date | null {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  if (!year || !month || !day) return null;
+  return new Date(year, month - 1, day);
+}
+
 export default function Reservas() {
   const router = useRouter();
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -35,15 +45,23 @@ export default function Reservas() {
   const dayParam = searchParams.get("date");
   const roomParam = searchParams.get("room");
 
-  function formatDate(d: Date) {
-    return d.toISOString().split("T")[0];
-  }
+  const handleDaySelection = useCallback(
+    (newDate: Date) => {
+      if (!newDate) return;
 
-  function parseDateString(dateStr: string): Date | null {
-    const [year, month, day] = dateStr.split("-").map(Number);
-    if (!year || !month || !day) return null;
-    return new Date(year, month - 1, day);
-  }
+      setDate(newDate);
+
+      const currentParams = new URLSearchParams(
+        Array.from(searchParams.entries())
+      );
+      currentParams.set("date", formatDate(newDate));
+
+      if (!currentParams.get("room")) currentParams.set("room", "lab_01");
+
+      router.push(`?${currentParams.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
 
   useEffect(() => {
     if (dayParam) {
@@ -55,22 +73,7 @@ export default function Reservas() {
       const today = new Date();
       handleDaySelection(today);
     }
-  }, [dayParam]);
-
-  function handleDaySelection(newDate: Date) {
-    if (!newDate) return;
-
-    setDate(newDate);
-
-    const currentParams = new URLSearchParams(
-      Array.from(searchParams.entries())
-    );
-    currentParams.set("date", formatDate(newDate));
-
-    if (!currentParams.get("room")) currentParams.set("room", "lab_01");
-
-    router.push(`?${currentParams.toString()}`, { scroll: false });
-  }
+  }, [dayParam, handleDaySelection]);
 
   useEffect(() => {
     const loadBookings = async () => {
@@ -84,7 +87,7 @@ export default function Reservas() {
     };
 
     loadBookings();
-  }, [dayParam, roomParam]);
+  }, [dayParam, roomParam, date, handleDaySelection]);
 
   return (
     <div className="h-screen w-full px-8 py-4 max-lg:p-4">

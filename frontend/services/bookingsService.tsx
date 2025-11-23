@@ -24,7 +24,7 @@ export async function fetchBookingById(id: number) {
 export async function fetchBookingByQuery(date: string, room: string) {
   try {
     const response = await fetch(
-      `${API_URL}/bookings?date=${date}&room=${room}`
+      `${API_URL}/bookings/search?date=${date}&roomId=${room}`
     );
     return await response.json();
   } catch (error) {
@@ -33,21 +33,24 @@ export async function fetchBookingByQuery(date: string, room: string) {
 }
 
 export async function createBooking(booking: {
-  title: string;
-  type: string;
-  description?: string;
-  repeat: boolean;
-  user: string;
-  data: string;
-  room: string;
   startTime: string;
   endTime: string;
+  professorId: string;
+  type: string;
+  title: string;
+  description?: string;
+  roomId: string;
+  repeat: boolean;
 }) {
   try {
     const response = await fetch(`${API_URL}/bookings`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(booking),
+      body: JSON.stringify({
+        ...booking,
+        startTime: `${booking.startTime}`,
+        endTime: `${booking.endTime}`,
+      }),
     });
     return response.json();
   } catch (error) {
@@ -58,15 +61,14 @@ export async function createBooking(booking: {
 export async function updateBooking(
   id: string,
   booking: {
-    title: string;
-    type: string;
-    description?: string;
-    repeat: boolean;
-    user: string;
-    data: string;
-    room: string;
     startTime: string;
     endTime: string;
+    professorId: string;
+    type: string;
+    title: string;
+    description?: string;
+    roomId: string;
+    repeat: boolean;
   }
 ) {
   try {

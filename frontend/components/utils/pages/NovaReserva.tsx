@@ -11,13 +11,16 @@ import NovaReservaForm from "@/components/utils/reserva/NovaReservaForm";
 import SectionMapa from "@/components/utils/reserva/mapa/SectionMapa";
 import UserButton from "@/components/utils/UserButton";
 import { ChevronLeft } from "lucide-react";
-import { Metadata } from "next";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const softwares = ["VSCode", "Eclipse", "Java", "Node", "AutoCAD", "Arduino"];
 const equipamentos = ["Laptops", "Projetor", "TV", "Makita"];
+
+function formatDate(d: Date) {
+  return d.toISOString().split("T")[0];
+}
 
 export default function NovaReserva() {
   const router = useRouter();
@@ -25,15 +28,23 @@ export default function NovaReserva() {
   const searchParams = useSearchParams();
   const dayParam = searchParams.get("date");
 
-  function formatDate(d: Date) {
-    return d.toISOString().split("T")[0];
-  }
-
   function parseDateString(dateStr: string): Date | null {
     const [year, month, day] = dateStr.split("-").map(Number);
     if (!year || !month || !day) return null;
     return new Date(year, month - 1, day);
   }
+
+  const handleDaySelection = useCallback(
+    (newDate: Date) => {
+      setDate(newDate);
+
+      const params = new URLSearchParams();
+      params.set("date", formatDate(newDate));
+
+      router.push(`${window.location.pathname}?${params.toString()}`);
+    },
+    [router]
+  );
 
   useEffect(() => {
     if (dayParam) {
@@ -45,16 +56,7 @@ export default function NovaReserva() {
       const today = new Date();
       handleDaySelection(today);
     }
-  }, [dayParam]);
-
-  function handleDaySelection(newDate: Date) {
-    setDate(newDate);
-
-    const params = new URLSearchParams();
-    params.set("date", formatDate(newDate));
-
-    router.push(`${window.location.pathname}?${params.toString()}`);
-  }
+  }, [dayParam, handleDaySelection]);
 
   return (
     <>
