@@ -1,7 +1,7 @@
 # ===============================
 # Stage 1: Build the Application
 # ===============================
-FROM maven:3.9-oracle-17 AS build
+FROM maven:3.9-amazoncorretto-17 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
