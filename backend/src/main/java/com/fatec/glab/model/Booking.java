@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "booking")
 public class Booking {
 
