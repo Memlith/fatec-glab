@@ -21,7 +21,7 @@ RUN mvn clean package -DskipTests
 # ===============================
 # Stage 2: Run the Application
 # ===============================
-FROM amazoncorretto:17-jre
+FROM amazoncorretto:17-alpine
 
 # Set working directory
 WORKDIR /app
