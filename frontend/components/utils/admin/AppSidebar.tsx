@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, HomeIcon, LogOut, User, Wrench } from "lucide-react";
+import { GraduationCap, HomeIcon, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,75 +11,93 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "../mode-toggle";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  TooltipProvider,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { ModeToggleSidebar } from "../mode-toggle-sidebar";
 
 const items = [
   {
-    title: "Gerenciamento de Salas",
-    url: "/admin/gerenciamento-de-salas",
-    icon: Home,
+    title: "Gerenciamento de Professores",
+    url: "/admin/gerenciamento-de-professores",
+    icon: GraduationCap,
   },
-  {
-    title: "Gerenciamento de Usuários",
-    url: "/admin/gerenciamento-de-usuarios",
-    icon: User,
-  },
-  {
-    title: "Gerenciamento de Equipamentos",
-    url: "/admin/gerenciamento-de-equipamentos",
-    icon: Wrench,
-  },
+  //   {
+  //     title: "Gerenciamento de Salas",
+  //     url: "/admin/gerenciamento-de-salas",
+  //     icon: Home,
+  //   },
+  //   {
+  //     title: "Gerenciamento de Equipamentos",
+  //     url: "/admin/gerenciamento-de-equipamentos",
+  //     icon: Wrench,
+  //   },
 ];
 
 function HomeButton() {
+  const { open } = useSidebar();
+
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button variant="outline" size="icon" className="h-10 w-10" asChild>
-          <Link href="/reservas">
-            <HomeIcon />
-          </Link>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>Home</p>
-      </TooltipContent>
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 bg-transparent"
+            asChild
+          >
+            <Link href="/reservas">
+              <HomeIcon />
+            </Link>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={open ? "top" : "right"}>
+          <p>Home</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
 function LogoutButton() {
+  const { open } = useSidebar();
+
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button variant="outline" size="icon" className="h-10 w-10 ">
-          <LogOut className="stroke-red-400" />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>Sair</p>
-      </TooltipContent>
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10  bg-transparent"
+          >
+            <LogOut className="stroke-red-400" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={open ? "top" : "right"}>
+          <p>Sair</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { open } = useSidebar();
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Painel Administrador</SidebarGroupLabel>
@@ -112,25 +130,17 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <div className="flex flex-col gap-4 justify-center items-center bg-muted rounded-lg p-4">
-          <div className="w-full flex gap-4 items-center">
-            <Avatar>
-              <AvatarImage src="https://avatars.githubusercontent.com/u/132837450?v=4" />
-            </Avatar>
+        <div
+          className={cn(
+            "w-full flex gap-2",
+            open ? " flex-row justify-evenly" : "flex-col items-center"
+          )}
+        >
+          <LogoutButton />
 
-            <div className="flex flex-col gap-1 col-span-2">
-              <h1 className="font-medium">Professor</h1>
-              <Badge variant="default">Professor</Badge>
-            </div>
-          </div>
+          <ModeToggleSidebar variant="outline" />
 
-          <div className="w-full flex justify-evenly">
-            <LogoutButton />
-
-            <ModeToggle variant="outline" />
-
-            <HomeButton />
-          </div>
+          <HomeButton />
         </div>
       </SidebarFooter>
     </Sidebar>

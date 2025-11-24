@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function page() {
-  redirect("/admin/gerenciamento-de-salas");
+  redirect("/admin/gerenciamento-de-professores");
 }

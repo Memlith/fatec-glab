@@ -18,6 +18,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import EditarReservaForm from "./EditarReservaForm";
+import { useEffect, useState } from "react";
+import { fetchProfessorById } from "@/services/professorService";
 
 interface BookingCardProps {
   booking: Booking;
@@ -52,6 +54,20 @@ const getBookingColor = (
 
 export function BookingCard({ booking, top, height }: BookingCardProps) {
   const { badgeClass, hexColor } = getBookingColor(booking.type);
+  const [professor, setProfessor] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const professorData = await fetchProfessorById(booking.professorId);
+
+      if (professorData && professorData.name) {
+        setProfessor(professorData.name);
+      } else {
+        setProfessor("Professor não identificado");
+      }
+    }
+    fetchData();
+  }, [booking.professorId]);
 
   return (
     <Dialog>
@@ -89,10 +105,10 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
                 {booking.endTime.split("T")[1].slice(0, 5)}
               </span>
             </div>
-            {booking.professorId && (
+            {professor && (
               <div className="flex items-center gap-1">
                 <User className="h-3 w-3" />
-                <span className="truncate">{booking.professorId}</span>
+                <span className="truncate">{professor}</span>
               </div>
             )}
           </div>
@@ -122,10 +138,10 @@ export function BookingCard({ booking, top, height }: BookingCardProps) {
                 {booking.endTime.split("T")[1].slice(0, 5)}
               </span>
             </div>
-            {booking.professorId && (
+            {professor && (
               <div className="flex items-center gap-1">
                 <User className="h-4 w-4" />
-                <span className="truncate">{booking.professorId}</span>
+                <span className="truncate">{professor}</span>
               </div>
             )}
           </div>

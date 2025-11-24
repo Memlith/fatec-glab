@@ -14,7 +14,7 @@ export default function page() {
         <SuspensePage text="Carregando página de Gerenciamento de Salas" />
       }
     >
-      <GerenciamentoSalas />;
+      <GerenciamentoSalas />
     </Suspense>
   );
 }

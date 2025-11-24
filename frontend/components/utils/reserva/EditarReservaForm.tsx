@@ -21,21 +21,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Booking } from "@/services/api";
+import type { Booking } from "@/services/api";
 import { deleteBooking, updateBooking } from "@/services/bookingsService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Trash } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import roomsData from "./mapa/rooms.json";
+import { fetchProfessors } from "@/services/professorService";
 
 const HH_MM_REGEX = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 const formSchema = z.object({
   title: z.string().min(2, "O nome da reserva deve ter no mínimo 2 caracteres"),
   type: z.string(),
+  professorId: z.string().min(1, "O campo professor é obrigatório"),
   roomId: z.string().min(1, "O campo sala é obrigatório"),
   description: z.string().optional(),
   repeat: z.boolean().optional(),
@@ -55,12 +58,16 @@ interface EditarReservaFormProps {
 
 export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
   const searchParams = useSearchParams();
+  const [professors, setProfessors] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: booking.title,
       type: booking.type,
+      professorId: booking.professorId,
       roomId: booking.roomId,
       description: booking.description,
       repeat: booking.repeat,
@@ -68,6 +75,20 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
       endTime: booking.endTime.split("T")[1].slice(0, 5),
     },
   });
+
+  useEffect(() => {
+    const loadProfessors = async () => {
+      try {
+        const data = await fetchProfessors();
+        setProfessors(data);
+      } catch (error) {
+        console.error("Failed to fetch professors:", error);
+        toast.error("Erro ao carregar professores");
+      }
+    };
+
+    loadProfessors();
+  }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const data = searchParams.get("date") ?? "";
@@ -80,7 +101,7 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
         title: values.title,
         description: values.description,
         repeat: values.repeat || false,
-        professorId: "Professor",
+        professorId: values.professorId,
         roomId: values.roomId,
       };
 
@@ -139,23 +160,59 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="repeat"
-              render={({ field }) => (
-                <FormItem className="flex w-full justify-center gap-2">
-                  <FormControl>
-                    <Checkbox
-                      id="recorrencia"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel>A reserva se repete semanalmente?</FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="professorId"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full justify-center gap-2">
+                    <FormLabel>Professor</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione o professor" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Professores</SelectLabel>
+                            {professors.map((professor) => (
+                              <SelectItem
+                                key={professor.id}
+                                value={professor.id}
+                              >
+                                {professor.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="repeat"
+                render={({ field }) => (
+                  <FormItem className="flex w-full justify-center items-center gap-2">
+                    <FormControl>
+                      <Checkbox
+                        id="recorrencia"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>A reserva se repete semanalmente?</FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -169,7 +226,7 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Curso" />
                         </SelectTrigger>
                         <SelectContent>
@@ -207,6 +264,7 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="roomId"
@@ -284,17 +342,18 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
           </div>
 
           <div className="w-full grid grid-cols-2 gap-4 mt-4">
-            <Button
-              variant="destructive"
-              onClick={() => deleteBooking(booking.id)}
-            >
-              <Trash className="mr-2 h-4 w-4" />
-              Deletar Reserva
-            </Button>
-
             <Button type="submit">
               <Check className="mr-2 h-4 w-4" />
               Salvar Alterações
+            </Button>
+
+            <Button
+              variant="destructive"
+              onClick={() => deleteBooking(booking.id)}
+              className="order-[-1]"
+            >
+              <Trash className="mr-2 h-4 w-4" />
+              Deletar Reserva
             </Button>
           </div>
         </form>

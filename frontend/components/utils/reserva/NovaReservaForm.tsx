@@ -22,8 +22,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createBooking } from "@/services/bookingsService";
+import { fetchProfessors } from "@/services/professorService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -43,10 +45,18 @@ const formSchema = z.object({
     .string()
     .regex(HH_MM_REGEX, "Formato de hora inválido")
     .min(5, "A hora de término deve ser preenchida"),
+  professorId: z.string(),
 });
+
+type Professor = {
+  id: string;
+  name: string;
+  email: string;
+};
 
 export default function NovaReservaForm() {
   const searchParams = useSearchParams();
+  const [professors, setProfessors] = useState<Professor[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,9 +66,24 @@ export default function NovaReservaForm() {
       type: "",
       title: "",
       description: "",
+      professorId: "",
       repeat: false,
     },
   });
+
+  useEffect(() => {
+    const loadProfessors = async () => {
+      try {
+        const data = await fetchProfessors();
+        setProfessors(data);
+      } catch (error) {
+        console.error("Failed to fetch professors:", error);
+        toast.error("Erro ao carregar professores");
+      }
+    };
+
+    loadProfessors();
+  }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const data = searchParams.get("date") ?? "";
@@ -67,7 +92,7 @@ export default function NovaReservaForm() {
     const booking = {
       startTime: `${data}T${values.startTime}:00`,
       endTime: `${data}T${values.endTime}:00`,
-      professorId: "Professor",
+      professorId: values.professorId,
       type: values.type,
       title: values.title,
       description: values.description,
@@ -127,19 +152,19 @@ export default function NovaReservaForm() {
               )}
             />
 
-            <div className="flex justify-center items-center">
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="type"
                 render={({ field }) => (
-                  <FormItem className="flex w-full justify-center gap-2">
+                  <FormItem className="flex max-2xl:flex-col items-center">
                     <FormLabel>Curso/Tipo da reserva</FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Curso" />
                         </SelectTrigger>
                         <SelectContent>
@@ -180,16 +205,54 @@ export default function NovaReservaForm() {
 
               <FormField
                 control={form.control}
+                name="professorId"
+                render={({ field }) => (
+                  <FormItem className="flex max-2xl:flex-col items-center">
+                    <FormLabel>Professor</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione o professor" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Professores</SelectLabel>
+                            {professors.map((professor) => (
+                              <SelectItem
+                                key={professor.id}
+                                value={professor.id}
+                              >
+                                {professor.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex justify-center">
+              <FormField
+                control={form.control}
                 name="repeat"
                 render={({ field }) => (
-                  <FormItem className="flex w-full justify-center gap-2">
+                  <FormItem className="flex items-center gap-2 space-y-0">
                     <FormControl>
                       <Checkbox
                         id="recorrencia"
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>A reserva se repete semanalmente?</FormLabel>
+                    <FormLabel className="!mt-0">
+                      A reserva se repete semanalmente?
+                    </FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}

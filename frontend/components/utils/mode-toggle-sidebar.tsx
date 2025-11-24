@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { useSidebar } from "../ui/sidebar";
 
-interface ModeToggleProps {
+interface ModeToggleSidebarProps {
   variant:
     | "default"
     | "destructive"
@@ -21,8 +23,9 @@ interface ModeToggleProps {
     | "link";
 }
 
-export function ModeToggle({ variant }: ModeToggleProps) {
+export function ModeToggleSidebar({ variant }: ModeToggleSidebarProps) {
   const { setTheme } = useTheme();
+  const { open } = useSidebar();
 
   return (
     <Tooltip>
@@ -48,7 +51,7 @@ export function ModeToggle({ variant }: ModeToggleProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <TooltipContent>
+      <TooltipContent side={open ? "top" : "right"}>
         <p>Mudar Tema</p>
       </TooltipContent>
     </Tooltip>
