@@ -11,7 +11,7 @@ public interface BookingRepository extends MongoRepository<Booking, String> {
 
     @Query("""
             {
-                "room": ?0,
+                "roomId": ?0,
                 "startTime": { '$lt': ?2 },
                 "endTime": { '$gt': ?1 }
             }
