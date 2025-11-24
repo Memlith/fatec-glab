@@ -32,7 +32,7 @@ COPY --from=build /app/target/*.jar app.jar
 
 # Spring Boot usually runs on 8080, but Render assigns a dynamic port.
 # We don't hardcode the port in EXPOSE, but strictly for documentation:
-EXPOSE 8080
+EXPOSE 3333
 
 # Run the application
 # We configure the server port to use Render's PORT environment variable
