@@ -12,7 +12,7 @@ COPY pom.xml .
 RUN mvn dependency:go-offline
 
 # Copy the source code
-COPY src ./src
+COPY backend/src ./src
 
 # Build the application
 # We skip tests here to speed up the deployment process on Render
