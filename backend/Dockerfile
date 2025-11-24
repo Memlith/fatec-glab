@@ -12,7 +12,7 @@ COPY pom.xml .
 RUN mvn dependency:go-offline
 
 # Copy the source code
-COPY backend/src ./src
+COPY src ./src
 
 # Build the application
 # We skip tests here to speed up the deployment process on Render
@@ -21,7 +21,7 @@ RUN mvn clean package -DskipTests
 # ===============================
 # Stage 2: Run the Application
 # ===============================
-FROM eclipse-temurin:17-jre
+FROM amazoncorretto:17-jre
 
 # Set working directory
 WORKDIR /app
