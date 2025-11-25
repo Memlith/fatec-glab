@@ -30,7 +30,7 @@ export default function UserButton() {
         <DropdownMenuContent>
           <DropdownMenuItem
             onClick={() => {
-              redirect("/admin/gerenciamento-de-salas");
+              redirect("/admin/gerenciamento-de-professores");
             }}
           >
             <Settings />
