@@ -10,6 +10,7 @@ import com.fatec.glab.mapper.BookingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fatec.glab.exception.BookingAlreadyExistsException;
 import com.fatec.glab.exception.IdNotFoundException;
 import com.fatec.glab.model.Booking;
 import com.fatec.glab.repository.BookingRepository;
@@ -24,14 +25,22 @@ public class BookingService {
     private BookingMapper bookingMapper;
 
     public Booking save(BookingRequestDTO bookingDTO) {
-        Booking booking = bookingMapper.toEntity(bookingDTO);
-        return bookingRepository.save(booking);
+        Booking novoBooking = bookingMapper.toEntity(bookingDTO);
+        getBookingSearch(novoBooking.getRoomId(), novoBooking.getStartTime().toLocalDate())
+                .forEach(existingBooking -> {
+                    boolean overlaps = novoBooking.getStartTime().isBefore(existingBooking.getEndTime())
+                            && novoBooking.getEndTime().isAfter(existingBooking.getStartTime());
+                    if (overlaps) {
+                        throw new BookingAlreadyExistsException("Já existe uma reserva para este horário.");
+                    }
+                });
+        return bookingRepository.save(novoBooking);
     }
 
     public Booking getById(String id) {
         return bookingRepository.findById(id)
-                .orElseThrow(() ->
-                        new IdNotFoundException("Booking com ID " + id + " não foi encontrado.")
+                .orElseThrow(()
+                        -> new IdNotFoundException("Booking com ID " + id + " não foi encontrado.")
                 );
     }
 
@@ -54,8 +63,8 @@ public class BookingService {
     public Booking update(String id, BookingRequestUpdateDTO dto) {
 
         Booking existingBooking = bookingRepository.findById(id)
-                .orElseThrow(() ->
-                        new IdNotFoundException("Booking com ID " + id + " não foi encontrado.")
+                .orElseThrow(()
+                        -> new IdNotFoundException("Booking com ID " + id + " não foi encontrado.")
                 );
 
         bookingMapper.updateFromDTO(dto, existingBooking);
