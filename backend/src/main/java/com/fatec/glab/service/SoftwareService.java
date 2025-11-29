@@ -10,6 +10,7 @@ import com.fatec.glab.repository.SoftwareRepository;
 import com.fatec.glab.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SoftwareService {
@@ -20,6 +21,7 @@ public class SoftwareService {
     @Autowired
     private SoftwareMapper softwareMapper;
 
+    @Transactional
     public Software save(SoftwareRequestDTO softwareRequestDTO) {
         Software software = softwareMapper.toEntity(softwareRequestDTO);
         return softwareRepository.save(software);
@@ -34,6 +36,7 @@ public class SoftwareService {
         return softwareRepository.findAll();
     }
 
+    @Transactional
     public Software update(String id, SoftwareRequestUpdateDTO softwareRequestUpdateDTO) {
         Software existingSoftware = softwareRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Software com ID " + id + " não encontrado."));
@@ -43,6 +46,7 @@ public class SoftwareService {
         return softwareRepository.save(existingSoftware);
     }
 
+    @Transactional
     public void delete(String id) {
         softwareRepository.deleteById(id);
     }

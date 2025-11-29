@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +39,6 @@ public class SoftwareController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<SoftwareResponseDTO> create(@Valid @RequestBody SoftwareRequestDTO softwareRequestDTO) {
         Software savedSoftware = softwareService.save(softwareRequestDTO);
         SoftwareResponseDTO responseDTO = softwareMapper.toDTO(savedSoftware);
@@ -48,7 +46,6 @@ public class SoftwareController {
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<SoftwareResponseDTO> update(@PathVariable String id,@Valid @RequestBody SoftwareRequestUpdateDTO softwareRequestDTO) {
         Software updatedSoftware = softwareService.update(id, softwareRequestDTO);
         SoftwareResponseDTO responseDTO = softwareMapper.toDTO(updatedSoftware);

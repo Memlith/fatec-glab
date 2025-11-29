@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,7 +28,6 @@ public class BookingController {
     private BookingService bookingService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<BookingResponseDTO> save(
             @Valid @RequestBody BookingRequestDTO bookingRequestDTO,
             UriComponentsBuilder uriBuilder) {
@@ -71,7 +69,6 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<BookingResponseDTO> update(
             @PathVariable String id,
             @Valid @RequestBody BookingRequestUpdateDTO bookingUpdateDTO) {

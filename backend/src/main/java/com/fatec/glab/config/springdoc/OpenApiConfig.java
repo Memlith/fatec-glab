@@ -1,4 +1,4 @@
-package com.fatec.glab.config.SpringDoc;
+package com.fatec.glab.config.springdoc;
 
 import com.fatec.glab.dto.error.ErrorResponseDTO;
 import com.fatec.glab.dto.error.ValidationErrorResponseDTO;
