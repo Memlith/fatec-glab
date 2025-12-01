@@ -8,10 +8,8 @@ O Fatec GLab tem como objetivo facilitar o gerenciamento, registro e acompanhame
 
 ## Funcionalidades Principais
 
-- Cadastro de usuários (alunos e professores)
 - Registro reserva de laboratório
 - Gerenciamento de reservas
-- Relatórios e estatísticas de uso
 - Interface intuitiva e amigável
 
 ## Tecnologias Utilizadas
