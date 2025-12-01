@@ -1,10 +1,8 @@
-package com.fatec.glab.dto.user;
+package com.fatec.glab.dto.authentication;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record userRequestCreateDTO (
-        @NotBlank
-        String name,
+public record LoginRequestDTO(
         @NotBlank
         String email,
         @NotBlank

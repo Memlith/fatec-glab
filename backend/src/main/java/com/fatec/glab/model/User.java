@@ -1,6 +1,8 @@
 package com.fatec.glab.model;
 
 
+import com.fatec.glab.dto.user.UserCreateRequestDTO;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,14 +17,21 @@ import java.util.List;
 @Document("Users")
 public class User implements UserDetails {
 
+    @Getter
     @Id
     private String id;
     private String name;
     private String email;
     private String password;
-    private String role;
     private Boolean active;
 
+    public User(UserCreateRequestDTO userRequestDTO, String encryptedPassword) {
+        this.name = userRequestDTO.name();
+        this.email = userRequestDTO.email();
+        this.password = encryptedPassword;
+        this.active = true;
+
+    }
 
 
     @Override
@@ -47,4 +56,5 @@ public class User implements UserDetails {
     public void enable() {
         this.active = true;
     }
+
 }
