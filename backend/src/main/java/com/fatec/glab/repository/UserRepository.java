@@ -10,5 +10,5 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     Optional<User> findByEmailIgnoreCaseAndActiveTrue (String email);
 
-    Boolean findByEmailIgnoreCase(@NotBlank String email);
+    Optional<User> findByEmailIgnoreCase(String email);
 }

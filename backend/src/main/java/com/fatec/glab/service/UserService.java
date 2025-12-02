@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User registerUser(UserCreateRequestDTO userRequestDTO) {
 
-        boolean userExist = userRepository.findByEmailIgnoreCase(userRequestDTO.email());
+        boolean userExist = userRepository.findByEmailIgnoreCase(userRequestDTO.email()).isPresent();
         if (userExist) {
             throw new UserAlreadyExist("User already exists");
         }

@@ -4,6 +4,7 @@ package com.fatec.glab.model;
 import com.fatec.glab.dto.user.UserCreateRequestDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,11 +14,13 @@ import java.util.Collection;
 import java.util.List;
 
 
+@Getter
+@Setter
 @NoArgsConstructor
-@Document("Users")
+@Document("users")
 public class User implements UserDetails {
 
-    @Getter
+
     @Id
     private String id;
     private String name;
