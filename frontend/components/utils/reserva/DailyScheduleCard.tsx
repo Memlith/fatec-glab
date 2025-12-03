@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Loader2 } from "lucide-react";
 import { Booking } from "@/services/api";
 import { BookingCard } from "./BookingCard";
+import { useSearchParams } from "next/navigation";
 
 const HOUR_HEIGHT = 60;
 const START_HOUR = 7;
@@ -39,26 +40,14 @@ const calculateVerticalPosition = (
 };
 
 interface DailyScheduleCardProps {
-  date: Date;
   bookings?: Booking[];
 }
 
-export function DailyScheduleCard({
-  date,
-  bookings = [],
-}: DailyScheduleCardProps) {
+export function DailyScheduleCard({ bookings = [] }: DailyScheduleCardProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [currentTimePos, setCurrentTimePos] = useState<number | null>(null);
-
-  const formattedDate = useMemo(
-    () =>
-      new Intl.DateTimeFormat("pt-BR", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-      }).format(date),
-    [date]
-  );
+  const searchParams = useSearchParams();
+  const selectedDate = searchParams.get("date");
 
   const timeSlots = useMemo(() => {
     return Array.from({ length: 24 - START_HOUR + 1 }, (_, i) => {
@@ -66,6 +55,25 @@ export function DailyScheduleCard({
       return `${hour.toString().padStart(2, "0")}:00`;
     });
   }, []);
+
+  const formattedDate = useMemo(() => {
+    const dateToFormat = selectedDate
+      ? selectedDate + "T00:00:00"
+      : new Date().toISOString();
+
+    const dateObject = new Date(dateToFormat);
+
+    if (isNaN(dateObject.getTime())) {
+      return "Data Inválida";
+    }
+
+    return new Intl.DateTimeFormat("pt-BR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      timeZone: "America/Sao_Paulo",
+    }).format(dateObject);
+  }, [selectedDate]);
 
   useEffect(() => {
     const updateTimePosition = () => {
@@ -142,7 +150,7 @@ export function DailyScheduleCard({
                   className="absolute w-full border-t-2 border-red-500 z-10"
                   style={{ top: currentTimePos }}
                 >
-                  <div className="absolute -left-2 -top-1.5 w-3 h-3 rounded-full bg-red-500" />
+                  <div className="absolute -left-2 -top-[7px] w-3 h-3 rounded-full bg-red-500" />
                 </div>
               )}
 

@@ -1,12 +1,22 @@
 import { API_URL, Equipment } from "./api";
 
-export async function fetchEquipments(
-  setEquipments: React.Dispatch<React.SetStateAction<Equipment[]>>
+export async function fetchEquipmentSet(
+  setEquipment: React.Dispatch<React.SetStateAction<Equipment[]>>
 ) {
   try {
     const response = await fetch(`${API_URL}/equipments`);
     const data: Equipment[] = await response.json();
-    setEquipments(data);
+    setEquipment(data);
+  } catch (error) {
+    console.error("Failed to fetch equipments:", error);
+  }
+}
+
+export async function fetchEquipments() {
+  try {
+    const response = await fetch(`${API_URL}/equipments`);
+    const data: Equipment[] = await response.json();
+    return data;
   } catch (error) {
     console.error("Failed to fetch equipments:", error);
   }
@@ -33,7 +43,7 @@ export async function createEquipment(equipment: Equipment) {
   }
 }
 
-export async function updateEquipment(id: number, equipment: Equipment) {
+export async function updateEquipment(id: string, equipment: Equipment) {
   try {
     await fetch(`${API_URL}/equipments/${id}`, {
       method: "PUT",
@@ -45,7 +55,7 @@ export async function updateEquipment(id: number, equipment: Equipment) {
   }
 }
 
-export async function deleteEquipment(id: number) {
+export async function deleteEquipment(id: string) {
   try {
     await fetch(`${API_URL}/equipments/${id}`, { method: "DELETE" });
   } catch (error) {

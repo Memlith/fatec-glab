@@ -6,16 +6,17 @@ export type User = {
   email: string;
 };
 
-export type Laboratory = {
+export type Classroom = {
   id?: number;
   name: string;
-  location: string;
+  capacity: string;
+  equipmentsId: string[];
+  softwaresId: string[];
 };
 
 export type Equipment = {
-  id?: number;
+  id?: string;
   name: string;
-  description: string;
 };
 
 export type Booking = {
@@ -32,9 +33,8 @@ export type Booking = {
 };
 
 export type Software = {
-  id?: number;
+  id?: string;
   name: string;
-  version: string;
 };
 
 export type Professor = {

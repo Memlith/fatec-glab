@@ -1,6 +1,6 @@
 import { API_URL, Software } from "./api";
 
-export async function fetchSoftwares(
+export async function fetchSoftwaresSet(
   setSoftwares: React.Dispatch<React.SetStateAction<Software[]>>
 ) {
   try {
@@ -11,8 +11,17 @@ export async function fetchSoftwares(
     console.error("Failed to fetch softwares:", error);
   }
 }
+export async function fetchSoftwares() {
+  try {
+    const response = await fetch(`${API_URL}/softwares`);
+    const data: Software[] = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch softwares:", error);
+  }
+}
 
-export async function fetchSoftwareById(id: number) {
+export async function fetchSoftwareById(id: string) {
   try {
     const response = await fetch(`${API_URL}/softwares/${id}`);
     return await response.json();
@@ -33,7 +42,7 @@ export async function createSoftware(software: Software) {
   }
 }
 
-export async function updateSoftware(id: number, software: Software) {
+export async function updateSoftware(id: string, software: Software) {
   try {
     await fetch(`${API_URL}/softwares/${id}`, {
       method: "PUT",
@@ -45,7 +54,7 @@ export async function updateSoftware(id: number, software: Software) {
   }
 }
 
-export async function deleteSoftware(id: number) {
+export async function deleteSoftware(id: string) {
   try {
     await fetch(`${API_URL}/softwares/${id}`, { method: "DELETE" });
   } catch (error) {

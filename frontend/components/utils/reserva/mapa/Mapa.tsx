@@ -5,6 +5,7 @@ import { Info } from "lucide-react";
 import { useState } from "react";
 import rectsData from "./rects.json";
 import { SalaAlert } from "../SalaAlert";
+// import { cn } from "@/lib/utils";
 
 interface Rect {
   x: number;
@@ -39,9 +40,13 @@ export const mapStyles = {
   base_button:
     "cursor-pointer rounded-full flex items-center justify-center shadow-lg hover:bg-muted-foreground/50 hover:border-muted-foreground/75 transition-colors",
   selected:
-    "!fill-green-400/50 hover:!fill-green-500/50 dark:!fill-green-400/50 dark:hover:!fill-green-500/40 !stroke-green-500 hover:!stroke-green-600 dark:!stroke-green-800",
+    "!fill-blue-400/50 hover:!fill-blue-500/50 dark:!fill-blue-400/50 dark:hover:!fill-blue-500/40 !stroke-blue-500 hover:!stroke-blue-600 dark:!stroke-blue-800",
   selected_button:
-    "border-green-500 hover:!border-green-600 dark:border-green-800",
+    "border-blue-500 hover:!border-blue-600 dark:border-blue-800",
+  highlighted:
+    "!fill-orange-400/50 hover:!fill-orange-500/50 dark:!fill-orange-400/50 dark:hover:!fill-orange-500/40 !stroke-orange-500 hover:!stroke-orange-600 dark:!stroke-orange-800",
+  highlighted_button:
+    "border-orange-500 hover:!border-orange-600 dark:border-orange-800",
 };
 
 export default function Mapa({ rooms, bloco }: MapaProps) {
@@ -86,7 +91,7 @@ export default function Mapa({ rooms, bloco }: MapaProps) {
               ? "0 0 1740 3020"
               : bloco == 2
               ? "0 0 1650 2700"
-              : "0 0 1650 2700"
+              : "0 0 1000 1940"
           }
         >
           {rooms.map((room) => {
@@ -96,6 +101,12 @@ export default function Mapa({ rooms, bloco }: MapaProps) {
             const buttonSize = 200;
             const buttonX = room.x + room.width - buttonSize * 0.75;
             const buttonY = room.y + room.height - buttonSize * 0.75;
+
+            // const reservasSize = 150;
+            // const reservasX = room.x + room.width - reservasSize * 1.25;
+            // const reservasY = room.y + reservasSize * 0.15;
+
+            // const reservas = 0;
 
             return (
               <g key={room.id} className="relative">
@@ -124,11 +135,31 @@ export default function Mapa({ rooms, bloco }: MapaProps) {
                   alignmentBaseline="middle"
                   fontSize="100"
                   fill="black"
-                  className="fill-foreground font-semibold"
+                  className="fill-foreground font-semibold pointer-events-none"
                   pointerEvents="none"
                 >
                   {room.label}
                 </text>
+
+                {/* <foreignObject
+                  x={reservasX}
+                  y={reservasY}
+                  width={reservasSize}
+                  height={reservasSize * 0.75}
+                  className="pointer-events-none"
+                >
+                  <div className="text-[80px] flex justify-end items-center gap-4 text-muted-foreground">
+                    <ClipboardClock
+                      size={80}
+                      className={cn(
+                        reservas > 0
+                          ? "stroke-green-600"
+                          : "stroke-muted-foreground"
+                      )}
+                    />
+                    <span>{reservas}</span>
+                  </div>
+                </foreignObject> */}
 
                 <foreignObject
                   x={buttonX}
@@ -168,7 +199,7 @@ export default function Mapa({ rooms, bloco }: MapaProps) {
                       alignmentBaseline="middle"
                       fontSize="80"
                       fill="black"
-                      className="fill-foreground font-medium"
+                      className="fill-foreground font-medium pointer-events-none"
                       pointerEvents="none"
                     >
                       Escadas

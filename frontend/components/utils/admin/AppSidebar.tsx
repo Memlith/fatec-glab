@@ -1,6 +1,12 @@
 "use client";
 
-import { GraduationCap, HomeIcon, LogOut } from "lucide-react";
+import {
+  FolderCode,
+  GraduationCap,
+  HomeIcon,
+  LogOut,
+  Wrench,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -34,13 +40,18 @@ const items = [
   //   {
   //     title: "Gerenciamento de Salas",
   //     url: "/admin/gerenciamento-de-salas",
-  //     icon: Home,
+  //     icon: Square,
   //   },
-  //   {
-  //     title: "Gerenciamento de Equipamentos",
-  //     url: "/admin/gerenciamento-de-equipamentos",
-  //     icon: Wrench,
-  //   },
+  {
+    title: "Gerenciamento de Equipamentos",
+    url: "/admin/gerenciamento-de-equipamentos",
+    icon: Wrench,
+  },
+  {
+    title: "Gerenciamento de Softwares",
+    url: "/admin/gerenciamento-de-softwares",
+    icon: FolderCode,
+  },
 ];
 
 function HomeButton() {
