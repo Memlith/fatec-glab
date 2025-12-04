@@ -10,6 +10,7 @@ import com.fatec.glab.repository.ClassroomRepository;
 import com.fatec.glab.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClassroomService {
@@ -20,6 +21,7 @@ public class ClassroomService {
     @Autowired
     private ClassroomMapper classroomMapper;
 
+    @Transactional
     public Classroom save(ClassroomRequestDTO classroomDTO) {
         Classroom classroom = classroomMapper.toEntity(classroomDTO);
         return classroomRepository.save(classroom);
@@ -36,6 +38,7 @@ public class ClassroomService {
         return classroomRepository.findAll();
     }
 
+    @Transactional
     public Classroom update(String id, ClassroomRequestUpdateDTO dto) {
         Classroom existingClassroom = classroomRepository.findById(id)
                 .orElseThrow(() ->
@@ -47,6 +50,7 @@ public class ClassroomService {
         return classroomRepository.save(existingClassroom);
     }
 
+    @Transactional
     public void delete(String id) {
         classroomRepository.deleteById(id);
     }

@@ -14,6 +14,7 @@ import com.fatec.glab.exception.BookingAlreadyExistsException;
 import com.fatec.glab.exception.IdNotFoundException;
 import com.fatec.glab.model.Booking;
 import com.fatec.glab.repository.BookingRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BookingService {
@@ -24,6 +25,7 @@ public class BookingService {
     @Autowired
     private BookingMapper bookingMapper;
 
+    @Transactional
     public Booking save(BookingRequestDTO bookingDTO) {
         Booking novoBooking = bookingMapper.toEntity(bookingDTO);
         getBookingSearch(novoBooking.getRoomId(), novoBooking.getStartTime().toLocalDate())
@@ -60,6 +62,7 @@ public class BookingService {
         return bookingRepository.findByRoomAndDateRange(roomId, startOfDay, endOfDay);
     }
 
+    @Transactional
     public Booking update(String id, BookingRequestUpdateDTO dto) {
 
         Booking existingBooking = bookingRepository.findById(id)
@@ -72,6 +75,7 @@ public class BookingService {
         return bookingRepository.save(existingBooking);
     }
 
+    @Transactional
     public void delete(String id) {
         bookingRepository.deleteById(id);
     }
