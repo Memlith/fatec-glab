@@ -27,6 +27,7 @@ jobs:
 
       - name: Testar se o Spring Boot inicia (Context Load)
         env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
           FIREBASE_CREDENTIALS_BASE64: ${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}
         run: ./mvnw clean test
 
