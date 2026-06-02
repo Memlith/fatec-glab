@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import roomsData from "./rooms.json";
+import { ClipboardClock } from "lucide-react";
 
 export interface Room {
   id: string;
@@ -125,7 +126,7 @@ export default function SectionMapa() {
         <>
           <div className="h-fit flex flex-col gap-2">
             <div className="w-full grid grid-cols-3 max-2xl:grid-cols-2 items-center">
-              <span className="font-semibold text-nowrap text-center">
+              <span className="font-semibold text-nowrap text-center xl:text-sm">
                 Selecionar Bloco
               </span>
 
@@ -145,7 +146,7 @@ export default function SectionMapa() {
             </div>
 
             <div className="w-full grid grid-cols-3 max-2xl:grid-cols-2 items-center">
-              <span className="font-semibold text-nowrap text-center">
+              <span className="font-semibold text-nowrap text-center xl:text-sm">
                 Selecionar Andar
               </span>
               <Select
@@ -171,13 +172,34 @@ export default function SectionMapa() {
             </div>
           </div>
 
-          <div className="h-full px-16 lg:px-12 pt-4 flex flex-col gap-4">
-            <h2 className="h-fit text-2xl font-semibold tracking-tight text-center">
+          <div className="h-full px-16 lg:px-8 flex flex-col gap-4 xl:gap-2">
+            <h2 className="h-fit text-2xl max-xl:text-base font-semibold tracking-tight text-center">
               Mapa {floorLabels[selectedFloor]} - Bloco {selectedBlock}
             </h2>
 
             <div className="h-full lg:h-[80%] flex justify-center">
               <Mapa rooms={currentRooms} bloco={selectedBlock} />
+            </div>
+
+            <div className="w-full flex justify-center">
+              <div className="xl:w-full max-xl:w-3/4 xl:grid xl:grid-cols-2 gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="h-5 w-5 bg-muted/50 rounded-sm border border-muted-foreground/25" />
+                  <p className="font-medium max-2xl:text-sm">Disponível</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-5 w-5 bg-blue-400/50 rounded-sm" />
+                  <p className="font-medium max-2xl:text-sm">Selecionado</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-5 w-5 bg-red-400/50 rounded-sm" />
+                  <p className="font-medium max-2xl:text-sm">Indisponível</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ClipboardClock size={22} className="stroke-green-600" />
+                  <p className="font-medium max-2xl:text-sm">Reservas</p>
+                </div>
+              </div>
             </div>
           </div>
         </>

@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AlertMobile from "@/components/utils/AlertMobile";
@@ -15,8 +14,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-const softwares = ["VSCode", "Eclipse", "Java", "Node", "AutoCAD", "Arduino"];
-const equipamentos = ["Laptops", "Projetor", "TV", "Makita"];
+// const softwares = ["VSCode", "Eclipse", "Java", "Node", "AutoCAD", "Arduino"];
+// const equipamentos = ["Laptops", "Projetor", "TV", "Makita"];
 
 function formatDate(d: Date) {
   return d.toISOString().split("T")[0];
@@ -107,15 +106,21 @@ export default function NovaReserva() {
 
                   <div className="flex flex-col gap-2">
                     <Label className="font-medium">Horário de Início</Label>
-                    <Input type="time" />
+                    <Input placeholder="HH:MM" />
+                    <span className="text-xs text-muted-foreground">
+                      Digite no formato HH:MM
+                    </span>
                   </div>
 
                   <div className="flex flex-col gap-2">
                     <Label className="font-medium">Horário de Término</Label>
-                    <Input type="time" />
+                    <Input placeholder="HH:MM" />
+                    <span className="text-xs text-muted-foreground">
+                      Digite no formato HH:MM
+                    </span>
                   </div>
 
-                  <h1 className="text-lg font-semibold">Softwares</h1>
+                  {/* <h1 className="text-lg font-semibold">Softwares</h1>
 
                   <div className="grid grid-cols-2 gap-4">
                     {softwares.map((software) => {
@@ -145,7 +150,7 @@ export default function NovaReserva() {
                         </div>
                       );
                     })}
-                  </div>
+                  </div> */}
                 </div>
               </div>
 

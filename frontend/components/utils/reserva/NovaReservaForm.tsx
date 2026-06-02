@@ -267,7 +267,7 @@ export default function NovaReservaForm() {
                   <FormItem>
                     <FormLabel>Horário de início</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="HH:MM" {...field} />
                     </FormControl>
                     <FormDescription>Digite no formato HH:MM</FormDescription>
                     <FormMessage />
@@ -281,7 +281,7 @@ export default function NovaReservaForm() {
                   <FormItem>
                     <FormLabel>Horário de Término</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="HH:MM" {...field} />
                     </FormControl>
                     <FormDescription>Digite no formato HH:MM</FormDescription>
                     <FormMessage />

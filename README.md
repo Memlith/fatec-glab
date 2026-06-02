@@ -8,10 +8,8 @@ O Fatec GLab tem como objetivo facilitar o gerenciamento, registro e acompanhame
 
 ## Funcionalidades Principais
 
-- Cadastro de usuários (alunos e professores)
 - Registro reserva de laboratório
 - Gerenciamento de reservas
-- Relatórios e estatísticas de uso
 - Interface intuitiva e amigável
 
 ## Tecnologias Utilizadas
@@ -25,7 +23,7 @@ O Fatec GLab tem como objetivo facilitar o gerenciamento, registro e acompanhame
 
 Acesse a aplicação Fatec GLab diretamente pela nuvem:
 
-- [https://glab-seven.vercel.app/](https://glab-seven.vercel.app/)
+- [Fatec GLab](https://fatecid-glab.vercel.app)
 
 ## Como rodar o projeto localmente
 
@@ -39,6 +37,7 @@ Acesse a aplicação Fatec GLab diretamente pela nuvem:
 ### Passos para executar
 
 1. **Clone o repositório:**
+
    ```bash
    git clone https://github.com/Memlith/fatec-glab.git
    cd fatec-glab
@@ -67,11 +66,13 @@ Acesse a aplicação Fatec GLab diretamente pela nuvem:
 #### Frontend React (Node.js)
 
 4. **Acesse a pasta do frontend** (ex: `frontend/`)
+
    ```bash
    cd frontend
    ```
 
 5. **Instale as dependências do frontend:**
+
    ```bash
    npm install
    ```

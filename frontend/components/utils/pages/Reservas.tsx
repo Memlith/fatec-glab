@@ -170,7 +170,7 @@ export default function Reservas() {
             </div>
 
             <div className="w-full h-full rounded-md ">
-              <DailyScheduleCard date={new Date()} bookings={bookings} />
+              <DailyScheduleCard bookings={bookings} />
             </div>
           </div>
         </div>
