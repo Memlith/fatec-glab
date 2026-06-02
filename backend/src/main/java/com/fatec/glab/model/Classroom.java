@@ -1,6 +1,8 @@
 package com.fatec.glab.model;
 
 import java.util.List;
+import java.time.Instant;
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -18,5 +20,6 @@ public class Classroom {
     private Integer capacity;
     private List<String> equipmentsId;
     private List<String> softwaresId;
-
+    @CreatedDate
+    private Instant createdDate;
 }
