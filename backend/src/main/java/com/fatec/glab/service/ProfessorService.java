@@ -10,6 +10,7 @@ import com.fatec.glab.repository.ProfessorRepository;
 import com.fatec.glab.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfessorService {
@@ -20,6 +21,7 @@ public class ProfessorService {
     @Autowired
     private ProfessorMapper professorMapper;
 
+    @Transactional
     public Professor save(ProfessorRequestDTO professorRequestDTO) {
         Professor professor = professorMapper.toEntity(professorRequestDTO);
         return professorRepository.save(professor);
@@ -34,6 +36,7 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
+    @Transactional
     public Professor update(String id, ProfessorRequestUpdateDTO professorRequestUpdateDTO) {
         Professor existingProfessor = professorRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Professor com ID " + id + " não encontrado."));
@@ -43,6 +46,7 @@ public class ProfessorService {
         return professorRepository.save(existingProfessor);
     }
 
+    @Transactional
     public void delete(String id) {
         professorRepository.deleteById(id);
     }

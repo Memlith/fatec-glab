@@ -9,7 +9,6 @@ import com.fatec.glab.service.ClassroomService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,7 +26,6 @@ public class ClassroomController {
     private ClassroomMapper classroomMapper;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<ClassroomResponseDTO> create(
             @Valid @RequestBody ClassroomRequestDTO classroomRequestDTO,
             UriComponentsBuilder uriBuilder) {
@@ -56,7 +54,6 @@ public class ClassroomController {
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<ClassroomResponseDTO> update(
             @PathVariable String id,
             @Valid @RequestBody ClassroomRequestUpdateDTO classroomRequestDTO) {

@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +39,6 @@ public class ProfessorController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<ProfessorResponseDTO> create(@Valid @RequestBody ProfessorRequestDTO professorRequestDTO) {
         Professor savedProfessor = professorService.save(professorRequestDTO);
         ProfessorResponseDTO responseDTO = professorMapper.toDTO(savedProfessor);
@@ -48,7 +46,6 @@ public class ProfessorController {
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<ProfessorResponseDTO> update(@PathVariable String id, @Valid @RequestBody ProfessorRequestUpdateDTO professorRequestDTO) {
         Professor updatedProfessor = professorService.update(id, professorRequestDTO);
         ProfessorResponseDTO responseDTO = professorMapper.toDTO(updatedProfessor);

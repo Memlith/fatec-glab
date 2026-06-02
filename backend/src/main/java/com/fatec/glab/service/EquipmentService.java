@@ -10,6 +10,7 @@ import com.fatec.glab.repository.EquipmentRepository;
 import com.fatec.glab.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EquipmentService {
@@ -20,6 +21,7 @@ public class EquipmentService {
     @Autowired
     private EquipmentMapper equipmentMapper;
 
+    @Transactional
     public Equipment save(EquipmentRequestDTO equipmentRequestDTO) {
         Equipment equipment = equipmentMapper.toEntity(equipmentRequestDTO);
         return equipmentRepository.save(equipment);
@@ -34,6 +36,7 @@ public class EquipmentService {
         return equipmentRepository.findAll();
     }
 
+    @Transactional
     public Equipment update(String id, EquipmentRequestUpdateDTO equipmentRequestUpdateDTO) {
         Equipment existingEquipment = equipmentRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Equipment com ID " + id + " não encontrado."));
@@ -43,6 +46,7 @@ public class EquipmentService {
         return equipmentRepository.save(existingEquipment);
     }
 
+    @Transactional
     public void delete(String id) {
         equipmentRepository.deleteById(id);
     }
