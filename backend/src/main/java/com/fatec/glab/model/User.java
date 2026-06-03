@@ -1,5 +1,7 @@
 package com.fatec.glab.model;
 
+import java.time.Instant;
+import org.springframework.data.annotation.CreatedDate;
 
 import com.fatec.glab.dto.user.UserCreateRequestDTO;
 import lombok.Getter;
@@ -27,6 +29,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Boolean active;
+    @CreatedDate
+    private Instant createdDate;
 
     public User(UserCreateRequestDTO userRequestDTO, String encryptedPassword) {
         this.name = userRequestDTO.name();
