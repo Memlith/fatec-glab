@@ -32,7 +32,7 @@ public class SecurityConfig {
 
                     req.requestMatchers(
                             HttpMethod.GET,
-                            "/bookings"
+                            "/bookings/**"
                     ).permitAll();
 
                     req.anyRequest()
