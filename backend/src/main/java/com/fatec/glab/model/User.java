@@ -2,6 +2,7 @@ package com.fatec.glab.model;
 
 import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fatec.glab.dto.user.UserCreateRequestDTO;
 import lombok.Getter;
@@ -15,13 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Document("users")
 public class User implements UserDetails {
-
 
     @Id
     private String id;
@@ -29,6 +28,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Boolean active;
+    private String role; // "ADMIN" or "USER"
     @CreatedDate
     private Instant createdDate;
 
@@ -37,13 +37,12 @@ public class User implements UserDetails {
         this.email = userRequestDTO.email();
         this.password = encryptedPassword;
         this.active = true;
-
+        this.role = "USER"; // Default role
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + (role != null ? role : "USER")));
     }
 
     @Override

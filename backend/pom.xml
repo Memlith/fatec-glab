@@ -19,6 +19,8 @@
 
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <mapstruct.version>1.6.3</mapstruct.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
     </properties>
@@ -59,7 +61,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
+            <version>1.18.36</version>
             <optional>true</optional>
         </dependency>
 
@@ -130,7 +132,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.32</version>
+                            <version>1.18.36</version>
                         </path>
                         <!-- MapStruct Processor -->
                         <path>
