@@ -19,8 +19,12 @@ public class FirebaseConfig {
 
     @PostConstruct
     public void init() {
+        if (firebaseCredentialsBase64 == null || firebaseCredentialsBase64.trim().isEmpty()) {
+            System.out.println("Firebase credentials not provided. Skipping initialization.");
+            return;
+        }
         try {
-            byte[] decodedBytes = Base64.getDecoder().decode(firebaseCredentialsBase64);
+            byte[] decodedBytes = Base64.getDecoder().decode(firebaseCredentialsBase64.trim());
             
             InputStream serviceAccount = new ByteArrayInputStream(decodedBytes);
 
@@ -34,7 +38,7 @@ public class FirebaseConfig {
             System.out.println("Firebase initialized!");
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao inicializar Firebase", e);
+            System.err.println("Erro ao inicializar Firebase: " + e.getMessage());
         }
     }
 }
