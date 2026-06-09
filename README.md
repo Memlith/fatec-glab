@@ -11,11 +11,13 @@ O Fatec GLab tem como objetivo facilitar o gerenciamento, registro e acompanhame
 - Registro reserva de laboratório
 - Gerenciamento de reservas
 - Interface intuitiva e amigável
+- Sistema de Login e Auth
 
 ## Tecnologias Utilizadas
 
 - **Backend:** Java (Maven, Spring Boot)
 - **Frontend:** Next.js
+- **Mobile App:** Kotlin
 - **Banco de dados:** MongoDB (hospedado na nuvem, conectado diretamente ao backend)
 - **Ferramentas de versionamento:** Git e GitHub
 
@@ -29,9 +31,10 @@ Acesse a aplicação Fatec GLab diretamente pela nuvem:
 
 ### Pré-requisitos
 
-- [Java JDK](https://www.oracle.com/java/technologies/downloads/) (versão recomendada: 11+)
+- [Java JDK](https://www.oracle.com/java/technologies/downloads/) (versão recomendada: 17)
 - [Maven](https://maven.apache.org/)
 - [Node.js](https://nodejs.org/)
+- Android Studio
 - Git
 
 ### Passos para executar
@@ -44,18 +47,16 @@ Acesse a aplicação Fatec GLab diretamente pela nuvem:
    ```
 
 2. **Configure as variáveis de ambiente:**
-   - Copie o arquivo de exemplo:
-     ```bash
-     cp .env.example .env
-     ```
-   - Edite o arquivo `.env` se necessário (os dados do MongoDB já estão configurados no Spring Boot para conexão direta à nuvem).
+  - Edite o arquivo application.properties
 
 ---
 
 #### Backend Java (Maven, Spring Boot)
 
 3. **Compile e execute a aplicação backend:**
+   
    ```bash
+   cd backend/
    mvn clean install
    mvn spring-boot:run
    ```
@@ -65,27 +66,22 @@ Acesse a aplicação Fatec GLab diretamente pela nuvem:
 
 #### Frontend React (Node.js)
 
-4. **Acesse a pasta do frontend** (ex: `frontend/`)
+4. **Compile e execute a aplicação frontend**
 
    ```bash
-   cd frontend
-   ```
-
-5. **Instale as dependências do frontend:**
-
-   ```bash
+   cd frontend/
    npm install
-   ```
-
-6. **Execute a aplicação frontend:**
-   ```bash
    npm run dev
    ```
    - O frontend normalmente estará disponível em `http://localhost:3000`
 
 ---
 
-> Ajuste os caminhos das pastas, variáveis ou configurações conforme a estrutura e necessidades do seu projeto!
+#### Mobile Android (Kotlin)
+
+5. **Abra a pasta pelo Android Studio e selecione a pasta `android/`**
+
+---
 
 ## Como Contribuir
 
@@ -94,3 +90,4 @@ Acesse a aplicação Fatec GLab diretamente pela nuvem:
 3. Commit suas alterações (`git commit -m 'Adiciona nova feature'`)
 4. Push para sua branch (`git push origin feature/nome-da-feature`)
 5. Abra um Pull Request
+6. Aguarde as verificações do Actions
