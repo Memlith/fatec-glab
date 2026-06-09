@@ -1,55 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { ShowForRole } from "./ShowForRole";
 import { Button } from "../ui/button";
-import { Settings, User, User2 } from "lucide-react";
+import { Settings, User, User2, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
 
 export default function UserButton() {
-  const [logged, setLogged] = useState<boolean>(false);
+  const { user, userProfile } = useAuth();
+  const router = useRouter();
 
-  useEffect(() => {
-    setLogged(true);
-  }, []);
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/auth");
+  };
 
-  if (logged) {
+  if (user) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="lg" variant="secondary">
             <User />
-            Administrador
+            {userProfile?.name || "Usuário"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem
-            onClick={() => {
-              redirect("/admin/gerenciamento-de-professores");
-            }}
-          >
-            <Settings />
-            Painel do Administrador
-          </DropdownMenuItem>
-          {/* <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="text-red-400 hover:!text-red-700"
-            onClick={() => {}}
-          >
-            <LogOut className="stroke-red-400" />
+          <ShowForRole role="ADMIN">
+            <DropdownMenuItem
+              onClick={() => {
+                router.push("/admin/gerenciamento-de-professores");
+              }}
+            >
+              <Settings />
+              Painel do Administrador
+            </DropdownMenuItem>
+          </ShowForRole>
+          <DropdownMenuItem onClick={handleLogout} className="text-red-500">
+            <LogOut className="mr-2 h-4 w-4" />
             Sair
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
   }
   return (
-    <Button size="lg" variant="outline">
+    <Button size="lg" variant="outline" onClick={() => router.push("/auth")}>
       <User2 />
       Fazer Login
     </Button>

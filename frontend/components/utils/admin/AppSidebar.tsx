@@ -1,5 +1,6 @@
 "use client";
 
+import { ShowForRole } from "../ShowForRole";
 import {
   FolderCode,
   GraduationCap,
@@ -110,34 +111,36 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Painel Administrador</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => {
-                const isActive = pathname === item.url;
+        <ShowForRole role="ADMIN">
+          <SidebarGroup>
+            <SidebarGroupLabel>Painel Administrador</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => {
+                  const isActive = pathname === item.url;
 
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a
-                        href={item.url}
-                        aria-current={isActive ? "page" : undefined}
-                        className={cn(
-                          "flex items-center gap-3 rounded-lg px-3 py-2 text-primary transition-all hover:text-primary",
-                          isActive && "bg-muted font-semibold"
-                        )}
-                      >
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <a
+                          href={item.url}
+                          aria-current={isActive ? "page" : undefined}
+                          className={cn(
+                            "flex items-center gap-3 rounded-lg px-3 py-2 text-primary transition-all hover:text-primary",
+                            isActive && "bg-muted font-semibold"
+                          )}
+                        >
+                          <item.icon className="h-5 w-5" />
+                          <span>{item.title}</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </ShowForRole>
       </SidebarContent>
 
       <SidebarFooter>

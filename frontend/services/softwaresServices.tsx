@@ -5,19 +5,23 @@ export async function fetchSoftwaresSet(
 ) {
   try {
     const response = await fetch(`${API_URL}/softwares`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data: Software[] = await response.json();
     setSoftwares(data);
   } catch (error) {
     console.error("Failed to fetch softwares:", error);
+    setSoftwares([]);
   }
 }
 export async function fetchSoftwares() {
   try {
     const response = await fetch(`${API_URL}/softwares`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data: Software[] = await response.json();
     return data;
   } catch (error) {
     console.error("Failed to fetch softwares:", error);
+    return [];
   }
 }
 

@@ -5,20 +5,23 @@ export async function fetchEquipmentSet(
 ) {
   try {
     const response = await fetch(`${API_URL}/equipments`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data: Equipment[] = await response.json();
     setEquipment(data);
   } catch (error) {
     console.error("Failed to fetch equipments:", error);
+    setEquipment([]);
   }
 }
 
 export async function fetchEquipments() {
   try {
     const response = await fetch(`${API_URL}/equipments`);
-    const data: Equipment[] = await response.json();
-    return data;
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
   } catch (error) {
     console.error("Failed to fetch equipments:", error);
+    return [];
   }
 }
 

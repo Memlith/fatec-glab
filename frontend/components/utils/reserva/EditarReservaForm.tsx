@@ -107,9 +107,11 @@ export default function EditarReservaForm({ booking }: EditarReservaFormProps) {
 
       const response = await updateBooking(booking.id, newBooking);
 
-      if (response.id) {
+      if (response && response.id) {
         toast.success("Reserva alterada com sucesso!");
         return;
+      } else {
+        toast.error("Erro ao alterar reserva (verifique se o ID está correto).");
       }
     } catch (error) {
       console.error(error);
