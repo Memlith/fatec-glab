@@ -1,6 +1,7 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/utils/admin/AppSidebar";
 import type { Metadata } from "next";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 export const metadata: Metadata = {
   title: {
@@ -19,9 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      {children}
-    </SidebarProvider>
+    <ProtectedRoute adminOnly={true}>
+      <SidebarProvider>
+        <AppSidebar />
+        {children}
+      </SidebarProvider>
+    </ProtectedRoute>
   );
 }
