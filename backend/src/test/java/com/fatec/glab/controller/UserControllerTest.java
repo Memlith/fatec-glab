@@ -1,12 +1,11 @@
 package com.fatec.glab.controller;
 
-import com.fatec.glab.config.FirebaseConfig;
 import com.fatec.glab.dto.user.UserCreateRequestDTO;
 import com.fatec.glab.dto.user.UserResponseDTO;
 import com.fatec.glab.mapper.UserMapper;
 import com.fatec.glab.model.User;
-import com.fatec.glab.service.UserService;
 import com.fatec.glab.repository.UserRepository;
+import com.fatec.glab.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,12 +13,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
@@ -64,6 +63,10 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/users/999"));
+                .andExpect(header().string("Location", "http://localhost/users/999"))
+                .andExpect(jsonPath("$.id").value("999"))
+                .andExpect(jsonPath("$.name").value("Caio"))
+                .andExpect(jsonPath("$.email").value("teste@email.com"))
+                .andExpect(jsonPath("$.role").value("USER"));
     }
 }
