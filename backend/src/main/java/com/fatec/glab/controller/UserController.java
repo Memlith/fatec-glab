@@ -4,10 +4,13 @@ package com.fatec.glab.controller;
 import com.fatec.glab.dto.user.UserCreateRequestDTO;
 import com.fatec.glab.dto.user.UserResponseDTO;
 import com.fatec.glab.mapper.UserMapper;
+import com.fatec.glab.model.User;
 import com.fatec.glab.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,5 +32,9 @@ public class UserController {
         return ResponseEntity.created(uri).body(userMapper.toUserResponseDTO(user));
     }
 
-
+    @GetMapping("/users/me")
+    public ResponseEntity<UserResponseDTO> getMe() {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(userMapper.toUserResponseDTO(user));
+    }
 }

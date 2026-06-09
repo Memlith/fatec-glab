@@ -40,8 +40,16 @@ public class SecurityConfig {
 
                     req.requestMatchers(
                             HttpMethod.GET,
-                            "/bookings/**"
+                            "/bookings/**",
+                            "/professors/**",
+                            "/equipments/**",
+                            "/softwares/**"
                     ).permitAll();
+
+                    req.requestMatchers(
+                            HttpMethod.POST,
+                            "/bookings/**"
+                    ).authenticated();
 
                     req.anyRequest()
                             .authenticated();
