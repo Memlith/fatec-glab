@@ -29,6 +29,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "firebase": "^12.14.0",
     "framer-motion": "^12.23.22",
     "lucide-react": "^0.554.0",
     "next": "^16.2.7",
