@@ -10,7 +10,7 @@ export type User = {
 export type Classroom = {
   id?: string;
   name: string;
-  capacity: number;
+  capacity: string;
   equipmentsId: string[];
   softwaresId: string[];
 };
