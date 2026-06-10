@@ -44,12 +44,12 @@ export async function createBooking(booking: {
   repeat: boolean;
 }) {
   try {
-    const user = auth.currentUser;
+    const user = auth?.currentUser;
     const token = user ? await user.getIdToken() : "";
-    
+
     const response = await fetch(`${API_URL}/bookings`, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
@@ -59,9 +59,9 @@ export async function createBooking(booking: {
         endTime: `${booking.endTime}`,
       }),
     });
-    
+
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    
+
     const text = await response.text();
     return text ? JSON.parse(text) : null;
   } catch (error) {
@@ -84,12 +84,12 @@ export async function updateBooking(
   }
 ) {
   try {
-    const user = auth.currentUser;
+    const user = auth?.currentUser;
     const token = user ? await user.getIdToken() : "";
-    
+
     const response = await fetch(`${API_URL}/bookings/${id}`, {
       method: "PUT",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
@@ -97,7 +97,7 @@ export async function updateBooking(
     });
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    
+
     const text = await response.text();
     return text ? JSON.parse(text) : null;
   } catch (error) {
@@ -108,16 +108,16 @@ export async function updateBooking(
 
 export async function deleteBooking(id: string) {
   try {
-    const user = auth.currentUser;
+    const user = auth?.currentUser;
     const token = user ? await user.getIdToken() : "";
 
-    const response = await fetch(`${API_URL}/bookings/${id}`, { 
+    const response = await fetch(`${API_URL}/bookings/${id}`, {
       method: "DELETE",
-      headers: { 
+      headers: {
         "Authorization": `Bearer ${token}`
       }
     });
-    
+
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return true;
   } catch (error) {
