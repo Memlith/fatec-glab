@@ -55,7 +55,7 @@ class UserControllerTest {
 
         UserResponseDTO mockResponseDTO = new UserResponseDTO("999", "Caio", "teste@email.com", "USER");
 
-        given(userService.registerUser(any(UserCreateRequestDTO.class))).willReturn(mockUser);
+        given(userService.createUserWithEmailAndPassword(any(UserCreateRequestDTO.class))).willReturn(mockUser);
         given(userMapper.toUserResponseDTO(any(User.class))).willReturn(mockResponseDTO);
 
         // Act & Assert

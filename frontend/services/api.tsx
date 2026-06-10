@@ -1,13 +1,14 @@
 export const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export type User = {
-  id?: number;
+  id?: string;
   name: string;
   email: string;
+  role: string;
 };
 
 export type Classroom = {
-  id?: number;
+  id?: string;
   name: string;
   capacity: string;
   equipmentsId: string[];
@@ -21,15 +22,14 @@ export type Equipment = {
 
 export type Booking = {
   id: string;
-  createdAt: string | null;
   startTime: string;
   endTime: string;
-  repeat: boolean;
+  professorId: string;
   type: string;
   title: string;
   description: string;
-  professorId: string;
   roomId: string;
+  repeat: boolean;
 };
 
 export type Software = {

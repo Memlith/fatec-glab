@@ -158,7 +158,6 @@ export default function ClassroomsForm() {
 
       await updateClassroom(dbId, {
         name: data.name,
-        // Ensure capacity is converted to the expected type for the service call, assuming the service expects a number if it came from the capacity input, but keeping it as string for safety based on the form schema
         capacity: data.capacity,
         equipmentsId: data.equipmentsId,
         softwaresId: data.softwaresId,

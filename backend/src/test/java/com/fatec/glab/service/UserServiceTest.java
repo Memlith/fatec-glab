@@ -44,7 +44,7 @@ class UserServiceTest {
         given(userRepository.save(any(User.class))).willReturn(userSalvo);
 
         // Act
-        User resultado = userService.registerUser(dtoRequest);
+        User resultado = userService.createUserWithEmailAndPassword(dtoRequest);
 
         // Assert
         assertNotNull(resultado.getId());
@@ -65,7 +65,7 @@ class UserServiceTest {
 
         // Act & Assert
         assertThrows(UserAlreadyExist.class, () -> {
-            userService.registerUser(dtoRequest);
+            userService.createUserWithEmailAndPassword(dtoRequest);
         });
 
         then(userRepository).should(never()).save(any(User.class));
