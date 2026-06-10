@@ -32,6 +32,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(req -> {
 
+                    req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+
                     req.requestMatchers("/register")
                             .permitAll();
                     
@@ -73,7 +75,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -82,16 +83,9 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "https://localhost:3000",
-                "http://127.0.0.1:3000",
-                "https://127.0.0.1:3000",
-                "http://localhost:3333",
-                "https://localhost:3333",
-                "http://127.0.0.1:3333",
-                "https://127.0.0.1:3333",
-                "https://fatec-glab-production.up.railway.app"
+                "https://fatecid-glab.vercel.app"
         ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
