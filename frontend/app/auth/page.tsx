@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, type User } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebase";
+import { API_URL } from "@/services/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,16 +18,35 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth!, email, password);
       router.push("/");
     } catch (error) {
       console.error("Login error:", error);
     }
   };
 
+  const syncGoogleUserWithBackend = async (firebaseUser: User | null) => {
+    if (!API_URL) {
+      console.error("Backend URL is not configured. Set NEXT_PUBLIC_BACKEND_URL.");
+      return;
+    }
+
+    if (!firebaseUser) return;
+
+    try {
+      const token = await firebaseUser.getIdToken();
+      await fetch(`${API_URL}/users/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      console.error("Failed to sync Google user with backend:", error);
+    }
+  };
+
   const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth!, googleProvider);
+      await syncGoogleUserWithBackend(result.user);
       router.push("/");
     } catch (error) {
       console.error("Google login error:", error);
@@ -54,6 +74,7 @@ export default function LoginPage() {
           </form>
           <div className="my-4 text-center text-sm text-muted-foreground">ou</div>
           <Button variant="outline" className="w-full" onClick={handleGoogleLogin}>Entrar com Google</Button>
+          <Button variant="secondary" className="w-full mt-2" onClick={() => router.push("/auth/register")}>Criar conta</Button>
         </CardContent>
       </Card>
     </div>

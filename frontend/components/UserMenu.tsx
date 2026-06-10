@@ -16,9 +16,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export const UserMenu = () => {
   const { user, userProfile } = useAuth();
-  
+
   if (!user) return null;
-  
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,7 +34,7 @@ export const UserMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut(auth)}>
+        <DropdownMenuItem onClick={() => signOut(auth!)}>
           Sair
         </DropdownMenuItem>
       </DropdownMenuContent>

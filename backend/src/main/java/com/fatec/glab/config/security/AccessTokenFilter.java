@@ -52,6 +52,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                             newUser.setName(decodedToken.getName());
                             newUser.setEmail(email);
                             newUser.setPassword(null);
+                            newUser.setRole("USER");
                             newUser.setActive(true);
 
                             return userRepository.save(newUser);

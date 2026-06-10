@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { API_URL } from "@/services/api";
+import { apiClient } from "@/lib/apiClient";
 
 interface UserProfile {
   name: string;
@@ -30,22 +30,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log("AuthProvider: Auth state changed:", firebaseUser?.email);
       if (firebaseUser) {
         setUser(firebaseUser);
-        // Busca o perfil do usuário no backend
-        const token = await firebaseUser.getIdToken();
+        // Busca o perfil do usuário no backend e cria no MongoDB se ainda não existir
         try {
-          const response = await fetch(`${API_URL}/users/me`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-            if (response.ok) {
-            const profile = await response.json();
-            console.log("AuthProvider: User profile loaded:", profile);
-            console.log("AuthProvider: User role detected:", profile.role); // Log adicionado
-            setUserProfile(profile);
-          } else {
-             console.error("AuthProvider: Failed to load profile. Status:", response.status);
-          }
+          const profile = await apiClient("/users/me");
+          console.log("AuthProvider: User profile loaded:", profile);
+          console.log("AuthProvider: User role detected:", profile.role);
+          setUserProfile(profile as UserProfile);
         } catch (error) {
           console.error("AuthProvider: Error fetching profile", error);
+          setUserProfile(null);
         }
       } else {
         setUser(null);
