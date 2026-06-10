@@ -1,4 +1,5 @@
 import { API_URL, Booking } from "./api";
+import { auth } from "@/lib/firebase";
 
 export async function fetchBookings(
   setBookings: React.Dispatch<React.SetStateAction<Booking[]>>
@@ -43,18 +44,29 @@ export async function createBooking(booking: {
   repeat: boolean;
 }) {
   try {
+    const user = auth.currentUser;
+    const token = user ? await user.getIdToken() : "";
+    
     const response = await fetch(`${API_URL}/bookings`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify({
         ...booking,
         startTime: `${booking.startTime}`,
         endTime: `${booking.endTime}`,
       }),
     });
-    return response.json();
+    
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
   } catch (error) {
     console.error("Failed to create booking:", error);
+    return null;
   }
 }
 
@@ -72,22 +84,44 @@ export async function updateBooking(
   }
 ) {
   try {
+    const user = auth.currentUser;
+    const token = user ? await user.getIdToken() : "";
+    
     const response = await fetch(`${API_URL}/bookings/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify(booking),
     });
 
-    return response.json();
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
   } catch (error) {
     console.error("Failed to update booking:", error);
+    return null;
   }
 }
 
 export async function deleteBooking(id: string) {
   try {
-    await fetch(`${API_URL}/bookings/${id}`, { method: "DELETE" });
+    const user = auth.currentUser;
+    const token = user ? await user.getIdToken() : "";
+
+    const response = await fetch(`${API_URL}/bookings/${id}`, { 
+      method: "DELETE",
+      headers: { 
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return true;
   } catch (error) {
     console.error("Failed to delete booking:", error);
+    return false;
   }
 }

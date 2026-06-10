@@ -5,6 +5,7 @@ export async function fetchProfessorsSet(
 ) {
   try {
     const response = await fetch(`${API_URL}/professors`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data: Professor[] = await response.json();
     setProfessors(data);
   } catch (error) {
@@ -15,15 +16,18 @@ export async function fetchProfessorsSet(
 export async function fetchProfessors() {
   try {
     const response = await fetch(`${API_URL}/professors`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return await response.json();
   } catch (error) {
     console.error("Failed to fetch professors:", error);
+    return []; // Return empty array on error
   }
 }
 
 export async function fetchProfessorById(id: string) {
   try {
     const response = await fetch(`${API_URL}/professors/${id}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return await response.json();
   } catch (error) {
     console.error("Failed to fetch professor:", error);

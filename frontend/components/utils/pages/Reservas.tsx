@@ -25,6 +25,8 @@ import {
 import { Booking } from "@/services/api";
 import { fetchBookingByQuery } from "@/services/bookingsService";
 import UserButton from "@/components/utils/UserButton";
+import { useAuth } from "@/context/AuthContext";
+import { ShowForRole } from "@/components/utils/ShowForRole";
 
 function formatDate(d: Date) {
   return d.toISOString().split("T")[0];
@@ -37,6 +39,7 @@ function parseDateString(dateStr: string): Date | null {
 }
 
 export default function Reservas() {
+  const { user } = useAuth();
   const router = useRouter();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -105,11 +108,13 @@ export default function Reservas() {
 
               <UserButton />
 
-              <Button size="lg" asChild>
-                <Link href={`/nova-reserva`}>
-                  <Plus /> Nova Reserva
-                </Link>
-              </Button>
+              <ShowForRole role="ADMIN">
+                <Button size="lg" asChild>
+                  <Link href={`/nova-reserva`}>
+                    <Plus /> Nova Reserva
+                  </Link>
+                </Button>
+              </ShowForRole>
             </div>
             <Sheet>
               <SheetTrigger asChild className="lg:hidden">
